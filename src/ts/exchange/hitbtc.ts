@@ -1,6 +1,4 @@
 import * as request from 'request';
-import * as async from 'async';
-// import { Order } from '../models/Order';
 import { IMarketDataSource, ICandle } from '../engine/MarketData';
 import moment = require('moment');
 
