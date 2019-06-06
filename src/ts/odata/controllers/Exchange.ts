@@ -1,18 +1,19 @@
 import { ODataController, Edm, odata } from "odata-v4-server";
 import { Exchange } from "../models/Exchange";
+import { MarketDataEngine } from "../../engine/MarketData";
 
 @odata.type(Exchange)
 @Edm.EntitySet("Exchange")
 export class ExchangeController extends ODataController {
   @odata.GET
-  async get(): Promise<Exchange[]> {
-    return [
-      { name: "hitbtc" }
-    ];
+  get(): Exchange[] {
+    return MarketDataEngine.getExchangeKeys().map(key => new Exchange({ key }));
   }
 
   @odata.GET
-  async getById(@odata.key key: string): Promise<Exchange> {
-    return { name: "hitbtc" };
+  getById(@odata.key key: string): Exchange {
+    return new Exchange({
+      key: MarketDataEngine.getExchangeKeys().find(e => e === key)
+    });
   }
 }

@@ -1,10 +1,11 @@
 import { Edm } from "odata-v4-server";
 
 export class Exchange {
+  @Edm.Key
   @Edm.String
-  public name: string
+  public key: string
 
-  constructor({ name }: { name?: string }) {
-    Object.assign(this, { name });
+  constructor({ key }: { key: string }) {
+    Object.assign(this, { key });
   }
 }
