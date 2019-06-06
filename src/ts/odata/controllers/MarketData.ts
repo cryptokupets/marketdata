@@ -47,10 +47,13 @@ export class MarketDataController extends ODataController {
   }
 
   @odata.POST
-  async post(@odata.body { exchangeKey }: { exchangeKey: string }): Promise<MarketData> {
+  async post(
+    @odata.body { exchangeKey, currency, asset, period }:
+    { exchangeKey: string, currency: string, asset: string, period: string }
+  ): Promise<MarketData> {
     const db = await connect();
-    const result = await db.collection(collectionName).insertOne({ exchangeKey });
-    return new MarketData({ _id: result.insertedId, exchangeKey });
+    const { insertedId: _id } = await db.collection(collectionName).insertOne({ exchangeKey, currency, asset, period });
+    return new MarketData({ _id, exchangeKey, currency, asset, period });
   }
 
   @odata.DELETE
