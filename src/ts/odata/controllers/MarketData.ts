@@ -53,13 +53,12 @@ export class MarketDataController extends ODataController {
     return new MarketData({ _id: result.insertedId, exchangeKey });
   }
 
-  // @odata.DELETE
-  // async delete(@odata.key key: string): Promise<number> {
-  //   const db = await connect();
-  //   let keyId;
-  //   try { keyId = new ObjectID(key); } catch(err) { keyId = key; }
-  //   return await db.collection(collectionName).deleteOne({_id: keyId}).then(result => result.deletedCount);
-  // }
+  @odata.DELETE
+  async delete(@odata.key key: string): Promise<number> {
+    const db = await connect();
+    const _id = new ObjectID(key);
+    return db.collection(collectionName).deleteOne({ _id }).then(result => result.deletedCount);
+  }
 
   // @odata.GET("Candles")
   // async getCandles(@odata.result result: any, @odata.query query: ODataQuery): Promise<Candle[]> {
