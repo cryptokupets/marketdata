@@ -1,6 +1,6 @@
 import { ObjectID } from "mongodb";
 import { Edm, odata } from "odata-v4-server";
-// import { Candle } from "./Candle";
+import { Candle } from "./Candle";
 
 export class MarketData {
   @Edm.Key
@@ -28,8 +28,8 @@ export class MarketData {
   // @Edm.String
   // public end: string;
 
-  // @Edm.Collection(Edm.EntityType(Edm.ForwardRef(() => Candle)))
-  // public Candles: Candle[]
+  @Edm.Collection(Edm.EntityType(Edm.ForwardRef(() => Candle)))
+  public Candles: Candle[]
 
   // @Edm.Action
   // async update(@odata.result result: any, @Edm.DateTimeOffset begin?: Date, @Edm.DateTimeOffset end?: Date): Promise<void> {

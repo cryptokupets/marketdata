@@ -1,8 +1,9 @@
 import { Edm } from "odata-v4-server";
 import { ObjectID } from "mongodb";
+import { ICandle } from "../../engine/Exchange";
 
-export class Candle {
-  @Edm.DateTimeOffset
+export class Candle implements ICandle {
+  @Edm.String
   public time: Date;
 
   @Edm.Double

@@ -14,7 +14,7 @@ sap.ui.define([
 			var sId = mArguments.id;
 			this.getView().bindElement({
 				model: "data",
-				path: "/Exchange('" + sId + "')"
+				path: "/MarketData('" + sId + "')"
 			});
 		}
 	});

@@ -2,8 +2,7 @@
 
 var express = require('express');
 
-var _require = require("./lib/ts/odata/server"),
-    CryptoServer = _require.CryptoServer;
+var { CryptoServer } = require("./lib/ts/odata/server");
 
 require('dotenv').config();
 

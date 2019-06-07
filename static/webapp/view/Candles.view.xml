@@ -6,7 +6,7 @@
 		<content>
 			<Table items="{
 					model: 'data',
-					path: 'Crypto.getCandles(currency=\'BTC\',period=\'PT1M\',asset=\'XMR\')'
+					path: 'Candles'
 				}"
 				inset="false"
 				growingThreshold="100"
