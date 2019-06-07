@@ -1,4 +1,5 @@
 import { Edm, odata } from "odata-v4-server";
+import { ExchangeEngine, ICandle } from "../../engine/Exchange";
 
 export class Exchange {
   @Edm.Key
@@ -7,13 +8,13 @@ export class Exchange {
 
   @Edm.Function
   @Edm.String
-  public getCandles(
+  public async getCandles(
     @Edm.String currency: string,
     @Edm.String asset: string,
     @Edm.String period: string,
     @odata.result result: any
-  ): any {
-    return { currency, asset, period, exchange: result.key };
+  ): Promise<ICandle[]> {
+    return ExchangeEngine.getExchange(result.key).getCandles({ currency, asset, period });
   }
 
   constructor({ key }: { key: string }) {

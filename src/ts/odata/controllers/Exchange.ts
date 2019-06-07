@@ -16,4 +16,6 @@ export class ExchangeController extends ODataController {
       key: MarketDataEngine.getExchangeKeys().find(e => e === key)
     });
   }
+  // список периодов
+  // список валютных пар
 }

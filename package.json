@@ -2,7 +2,7 @@
   "name": "cryptotrader",
   "version": "1.0.0",
   "description": "cryptotrader",
-  "main": "lib/js/index.js",
+  "main": "index.js",
   "typings": "index",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
