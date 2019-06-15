@@ -2,7 +2,6 @@
 	"sap.app": {
 		"id": "fokin.crypto",
 		"type": "application",
-		"i18n": "i18n/i18n.properties",
 		"dataSources": {
 			"default": {
 				"uri": "/odata/",
