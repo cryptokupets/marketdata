@@ -18,7 +18,9 @@ export class MarketData {
   public asset: string
 
   @Edm.String
-  public period: string // moment.duration('P1Y2M3DT4H5M6S');
+  public timeframe: string // https://ru.wikipedia.org/wiki/%D0%A2%D0%B0%D0%B9%D0%BC%D1%84%D1%80%D0%B5%D0%B9%D0%BC
+  
+  // moment.duration('P1Y2M3DT4H5M6S');
 
   // @Edm.String
   // public begin: string;
@@ -37,9 +39,9 @@ export class MarketData {
   // }
 
   constructor(
-    { _id, exchangeKey, currency, asset, period }:
-    { _id: ObjectID, exchangeKey: string, currency: string, asset: string, period: string }
+    { _id, exchangeKey, currency, asset, timeframe }:
+    { _id: ObjectID, exchangeKey: string, currency: string, asset: string, timeframe: string }
   ) {
-    Object.assign(this, { _id, exchangeKey, currency, asset, period });
+    Object.assign(this, { _id, exchangeKey, currency, asset, timeframe });
   }
 }

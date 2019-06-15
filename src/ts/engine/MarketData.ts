@@ -8,7 +8,7 @@ export interface IMarketDataSource {
   getCandles(options: {
     currency: string,
     asset: string,
-    period: string,
+    timeframe: string,
     begin?: Date,
     end?: Date
   }): Promise<ICandle[]>;

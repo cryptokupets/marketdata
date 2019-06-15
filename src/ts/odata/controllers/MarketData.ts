@@ -27,7 +27,6 @@ export class MarketDataController extends ODataController {
       .sort(mongodbQuery.sort)
       .map(e => new MarketData(e))
       .toArray();
-
     if (mongodbQuery.inlinecount) {
       (<any>result).inlinecount = await db.collection(collectionName)
         .find(mongodbQuery.query)
@@ -42,19 +41,20 @@ export class MarketDataController extends ODataController {
   async getById(@odata.key key: string, @odata.query query: ODataQuery): Promise<MarketData> {
     const { projection } = createQuery(query);
     const _id = new ObjectID(key);
-
     const db = await connect();
+
     return new MarketData(await db.collection(collectionName).findOne({ _id }, { projection }));
   }
 
   @odata.POST
   async post(
-    @odata.body { exchangeKey, currency, asset, period }:
-    { exchangeKey: string, currency: string, asset: string, period: string }
+    @odata.body { exchangeKey, currency, asset, timeframe }:
+    { exchangeKey: string, currency: string, asset: string, timeframe: string }
   ): Promise<MarketData> {
     const db = await connect();
-    const { insertedId: _id } = await db.collection(collectionName).insertOne({ exchangeKey, currency, asset, period });
-    return new MarketData({ _id, exchangeKey, currency, asset, period });
+    const { insertedId: _id } = await db.collection(collectionName).insertOne({ exchangeKey, currency, asset, timeframe });
+
+    return new MarketData({ _id, exchangeKey, currency, asset, timeframe });
   }
 
   @odata.DELETE
@@ -68,8 +68,8 @@ export class MarketDataController extends ODataController {
   async getCandles(@odata.result result: any, @odata.query query: ODataQuery): Promise<Candle[]> {
     const db = await connect();
     const _id = new ObjectID(result._id);
-    const { currency, asset, period, exchangeKey } = await db.collection(collectionName).findOne({ _id });
-    return (await ExchangeEngine.getExchange(exchangeKey).getCandles({ currency, asset, period }))
+    const { currency, asset, timeframe, exchangeKey } = await db.collection(collectionName).findOne({ _id });
+    return (await ExchangeEngine.getExchange(exchangeKey).getCandles({ currency, asset, timeframe }))
       .map(e => new Candle(e));
   }
 }

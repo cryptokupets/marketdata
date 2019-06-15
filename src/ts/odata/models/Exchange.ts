@@ -11,10 +11,10 @@ export class Exchange {
   public async getCandles(
     @Edm.String currency: string,
     @Edm.String asset: string,
-    @Edm.String period: string,
+    @Edm.String timeframe: string,
     @odata.result result: any
   ): Promise<ICandle[]> {
-    return ExchangeEngine.getExchange(result.key).getCandles({ currency, asset, period });
+    return ExchangeEngine.getExchange(result.key).getCandles({ currency, asset, timeframe });
   }
 
   constructor({ key }: { key: string }) {

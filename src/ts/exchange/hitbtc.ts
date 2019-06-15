@@ -6,23 +6,30 @@ import { IExchange, ICandle } from '../engine/Exchange';
 const BASE_URL = 'https://api.hitbtc.com/api/2/';
 
 export class Hitbtc implements IExchange {
-  async getCandles({ currency, asset, period }: {
+  static timeframeFormatter(timeframe: string): string {
+    return timeframe;
+  };
+
+  async getCandles({ currency, asset, timeframe }: {
     currency: string,
     asset: string,
-    period: string,
+    timeframe: string,
     // begin?: Date, // FIXME заменить на число или строку, чтобы исключить часовой пояс для даты
     // end?: Date
   }): Promise<ICandle[]> {
-    const periodMoment = moment.duration(period);
+    // const periodMoment = moment.duration(period);
     // console.log(periodMoment);
 
-    const periodFormated = 'M1';
+    // const periodFormated = 'M1';
+    // PT1M
+
+    
     
 
     // const { currency, asset, period, begin, end } = options;
     const url = `public/candles/${asset}${currency}`;
     const qs: any = {
-      period: periodFormated
+      period: Hitbtc.timeframeFormatter(timeframe)
     };
 
         const options = {
