@@ -9,8 +9,8 @@ export interface IExchange {
     currency: string,
     asset: string,
     timeframe: string,
-    begin?: Date,
-    end?: Date
+    start?: string,
+    end?: string
   }): Promise<ICandle[]>;
 };
 

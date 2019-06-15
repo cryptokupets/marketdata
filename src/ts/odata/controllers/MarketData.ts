@@ -68,8 +68,8 @@ export class MarketDataController extends ODataController {
   async getCandles(@odata.result result: any, @odata.query query: ODataQuery): Promise<Candle[]> {
     const db = await connect();
     const _id = new ObjectID(result._id);
-    const { currency, asset, timeframe, exchangeKey } = await db.collection(collectionName).findOne({ _id });
-    return (await ExchangeEngine.getExchange(exchangeKey).getCandles({ currency, asset, timeframe }))
+    const { currency, asset, timeframe, exchangeKey, start, end } = <MarketData>(await db.collection(collectionName).findOne({ _id }));
+    return (await ExchangeEngine.getExchange(exchangeKey).getCandles({ currency, asset, timeframe, start, end }))
       .map(e => new Candle(e));
   }
 }
