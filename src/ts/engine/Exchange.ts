@@ -15,7 +15,7 @@ export interface IExchange {
 };
 
 export interface ICandle {
-  time: Date,
+  time: string,
   open: number,
   high: number,
   low: number,

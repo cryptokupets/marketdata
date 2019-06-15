@@ -47,10 +47,10 @@ export class Hitbtc implements IExchange {
             // console.log(res.body);
             resolve(JSON.parse(body).slice(0, -1).map(e => (<any>{
               time: moment(e.timestamp).toISOString(),
-              open: e.open,
-              high: e.max,
-              low: e.min,
-              close: e.close
+              open: +e.open,
+              high: +e.max,
+              low: +e.min,
+              close: +e.close
             })));
             
           // }
