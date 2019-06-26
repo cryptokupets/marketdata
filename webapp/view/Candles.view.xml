@@ -1,0 +1,20 @@
+<mvc:View controllerName="ck.marketdata.controller.Candles" 
+  xmlns:mvc="sap.ui.core.mvc" 
+  xmlns="sap.m" 
+  xmlns:fc="open.fc">
+  <VBox class="sapUiTinyMargin">
+    <fc:CandlestickChart candles="{/}" 
+      axisLeftWidth="30" 
+      axisRightWidth="15" 
+      axisTopHeight="5" 
+      axisBottomHeight="20">
+      <fc:candles>
+        <fc:Candle x="{time}" 
+          open="{open}" 
+          high="{high}" 
+          low="{low}" 
+          close="{close}"/>
+      </fc:candles>
+    </fc:CandlestickChart>
+  </VBox>
+</mvc:View>
