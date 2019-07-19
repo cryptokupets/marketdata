@@ -15,6 +15,12 @@
       "": {
         "type": "sap.ui.model.json.JSONModel"
       },
+      "timeframes": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
+      "symbols": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
       "view": {
         "type": "sap.ui.model.json.JSONModel"
       }

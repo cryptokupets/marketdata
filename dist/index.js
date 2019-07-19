@@ -16,17 +16,24 @@ const Exchange_1 = require("./engine/Exchange");
 const app = express_1.default();
 const port = 8080; // default port to listen
 app.use(express_1.default.static(__dirname + "/../webapp"));
+app.get("/api/symbols/:exchange", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    const { exchange } = req.params;
+    res.json(yield Exchange_1.ExchangeEngine.getSymbols(exchange));
+}));
+app.get("/api/timeframes/:exchange", (req, res) => __awaiter(this, void 0, void 0, function* () {
+    const { exchange } = req.params;
+    res.json(yield Exchange_1.ExchangeEngine.getTimeframes(exchange));
+}));
 app.get("/api/candles/:exchange/:currency/:asset/:timeframe", (req, res) => __awaiter(this, void 0, void 0, function* () {
     const { exchange, currency, asset, timeframe } = req.params;
-    const { start, end, limit } = req.query;
+    const { start, end } = req.query;
     res.json(yield Exchange_1.ExchangeEngine.getCandles({
         exchange,
         currency,
         asset,
         timeframe,
         start,
-        end,
-        limit
+        end
     }));
 }));
 // start the Express server

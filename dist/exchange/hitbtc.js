@@ -20,84 +20,54 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment_1 = __importDefault(require("moment"));
 const request = __importStar(require("request-promise-native"));
+const Exchange_1 = require("../engine/Exchange");
 const BASE_URL = "https://api.hitbtc.com/api/2/";
-const CANDLES_LIMIT = 1000;
 class Hitbtc {
-    // UNDONE перевести в общепринятые обозначения
-    static timeframeToMinutes(timeframe) {
-        let duration = "P";
-        if (timeframe === "1M") {
-            duration += timeframe;
-        }
-        else if (["D1", "D7"].indexOf(timeframe) > -1) {
-            duration += timeframe.slice(1) + timeframe.slice(0, 1);
-        }
-        else if (["M1", "M3", "M5", "M15", "M30", "H1", "H4"].indexOf(timeframe) > -1) {
-            duration += "T" + timeframe.slice(1) + timeframe.slice(0, 1);
-        }
-        return moment_1.default.duration(duration).asMinutes(); // FIXME для месяца не сработает
-    }
-    static timeframeToTimeunits(timeframe) {
-        let timeunits;
-        if (timeframe === "1M") {
-            timeunits = "M";
-        }
-        else if (["D1", "D7"].indexOf(timeframe) > -1) {
-            timeunits = "D";
-        }
-        else if (["M1", "M3", "M5", "M15", "M30"].indexOf(timeframe) > -1) {
-            timeunits = "m";
-        }
-        else if (["H1", "H4"].indexOf(timeframe) > -1) {
-            timeunits = "h";
-        }
-        return timeunits;
-    }
-    _requestCandles(currency, asset, period, limit, from // UNDONE унифицировать здесь
-    ) {
+    getSymbols() {
         return __awaiter(this, void 0, void 0, function* () {
             const options = {
                 baseUrl: BASE_URL,
-                url: `public/candles/${asset}${currency}`,
-                qs: {
-                    period,
-                    from,
-                    limit
-                }
+                url: "public/symbol"
             };
             return JSON.parse(yield request.get(options)).map(e => {
                 return {
-                    time: e.timestamp,
-                    open: +e.open,
-                    high: +e.max,
-                    low: +e.min,
-                    close: +e.close,
-                    volume: +e.volume
+                    currency: e.quoteCurrency,
+                    asset: e.baseCurrency
                 };
             });
         });
     }
-    // TODO перенести логику работы с лимитом в обобщающий класс
-    getCandles({ currency, asset, timeframe, start, end, limit }) {
+    getTimeframes() {
         return __awaiter(this, void 0, void 0, function* () {
-            const endMoment = moment_1.default.utc(end); // FIXME некорректно срабатывает
-            const timeframeMinutes = Hitbtc.timeframeToMinutes(timeframe);
-            const startMoment = moment_1.default.utc(start);
-            if (!start) {
-                startMoment.add(-(limit ? limit : CANDLES_LIMIT) * timeframeMinutes, "m");
-            }
-            const ticks = endMoment.diff(startMoment, "m") / timeframeMinutes;
-            const iterations = ticks / CANDLES_LIMIT;
-            // цикл по этим итерациям
-            const candles = [];
-            for (let index = 0; index < iterations; index++) { // UNDONE в действительности это не используется
-                const response = yield this._requestCandles(currency, asset, timeframe, CANDLES_LIMIT, startMoment.toISOString());
-                for (const candle of response.filter(e => moment_1.default.utc(e.time).isSameOrBefore(endMoment))) {
-                    candles.push(candle);
+            return ["M1", "M3", "M5", "M15", "M30", "H1", "H4", "D1", "D7"];
+        });
+    }
+    getCandles({ currency, asset, timeframe, start, end }) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const CANDLES_LIMIT = 1000;
+            const limit = Math.min(Math.floor(moment_1.default.utc(end).diff(moment_1.default.utc(start), "m") /
+                Exchange_1.ExchangeEngine.timeframeToMinutes(timeframe)) + 1, CANDLES_LIMIT);
+            const options = {
+                baseUrl: BASE_URL,
+                url: `public/candles/${asset.toUpperCase()}${currency.toUpperCase()}`,
+                qs: {
+                    period: timeframe.toUpperCase(),
+                    from: moment_1.default.utc(start).toISOString(),
+                    limit
                 }
-                startMoment.add(CANDLES_LIMIT * timeframeMinutes, "m");
-            }
-            return candles;
+            };
+            return limit
+                ? JSON.parse(yield request.get(options)).map(e => {
+                    return {
+                        time: e.timestamp,
+                        open: +e.open,
+                        high: +e.max,
+                        low: +e.min,
+                        close: +e.close,
+                        volume: +e.volume
+                    };
+                })
+                : [];
         });
     }
 }

@@ -9,27 +9,19 @@
     <subHeader>
       <Toolbar>
         <ComboBox selectedKey="{view>/asset}" 
+          items="{symbols>/}" 
           change="onAssetChange">
           <items>
-            <core:Item text="XMR" 
-              key="XMR"/>
-            <core:Item text="XRP" 
-              key="XRP"/>
+            <core:Item text="{symbols>asset}" 
+              key="{symbols>asset}"/>
           </items>
         </ComboBox>
         <ComboBox selectedKey="{view>/timeframe}" 
+          items="{timeframes>/}" 
           change="onTimeframeChange">
           <items>
-            <core:Item text="M15" 
-              key="M15"/>
-            <core:Item text="M30" 
-              key="M30"/>
-            <core:Item text="H1" 
-              key="H1"/>
-            <core:Item text="H4" 
-              key="H4"/>
-            <core:Item text="D1" 
-              key="D1"/>
+            <core:Item text="{timeframes>}" 
+              key="{timeframes>}"/>
           </items>
         </ComboBox>
         <DateRangeSelection dateValue="{view>/start}" 

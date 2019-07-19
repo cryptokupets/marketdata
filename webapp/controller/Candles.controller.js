@@ -51,6 +51,13 @@ sap.ui.define(
         this.getView()
           .getModel()
           .loadData(sURL);
+
+        this.getView()
+          .getModel("timeframes")
+          .loadData("/api/timeframes/" + mArguments.exchange);
+        this.getView()
+          .getModel("symbols")
+          .loadData("/api/symbols/" + mArguments.exchange);
       },
 
       onAssetChange: function() {
