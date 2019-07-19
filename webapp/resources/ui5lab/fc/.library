@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<library xmlns="http://www.sap.com/sap.ui.library.xsd">
+
+	<name>ui5lab.fc</name>
+	<version>1.0.0</version>
+
+	<documentation>UI5 library: ui5lab.fc</documentation>
+
+	<dependencies>
+		<dependency>
+			<libraryName>sap.ui.core</libraryName>
+			<libraryName>sap.m</libraryName>
+		</dependency>
+	</dependencies>
+
+	<appData>
+	</appData>
+
+</library>
