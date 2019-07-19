@@ -1,21 +1,55 @@
 <mvc:View controllerName="ck.marketdata.controller.Candles" 
   xmlns:mvc="sap.ui.core.mvc" 
+  xmlns:core="sap.ui.core" 
   xmlns="sap.m" 
-  xmlns:fc="ui5lab.fc"
-  displayBlock="true" >
+  xmlns:fc="ui5lab.fc" 
+  displayBlock="true">
   <Page enableScrolling="false" 
     showHeader="false">
-    <VBox height="100%">
-      <fc:CandlestickChart candles="{/}" 
-        padding="5 20 25 60">
-        <fc:candles>
-          <fc:Candle x="{time}" 
-            open="{open}" 
-            high="{high}" 
-            low="{low}" 
-            close="{close}"/>
-        </fc:candles>
-      </fc:CandlestickChart>
-    </VBox>
+    <subHeader>
+      <Toolbar>
+        <ComboBox selectedKey="{view>/asset}" 
+          change="onAssetChange">
+          <items>
+            <core:Item text="XMR" 
+              key="XMR"/>
+            <core:Item text="XRP" 
+              key="XRP"/>
+          </items>
+        </ComboBox>
+        <ComboBox selectedKey="{view>/timeframe}" 
+          change="onTimeframeChange">
+          <items>
+            <core:Item text="M15" 
+              key="M15"/>
+            <core:Item text="M30" 
+              key="M30"/>
+            <core:Item text="H1" 
+              key="H1"/>
+            <core:Item text="H4" 
+              key="H4"/>
+            <core:Item text="D1" 
+              key="D1"/>
+          </items>
+        </ComboBox>
+        <DateRangeSelection dateValue="{view>/start}" 
+          secondDateValue="{view>/end}" 
+          change="onDateRangeChange" />
+      </Toolbar>
+    </subHeader>
+    <content>
+      <VBox height="100%">
+        <fc:CandlestickChart candles="{/}" 
+          padding="5 20 25 60">
+          <fc:candles>
+            <fc:Candle x="{time}" 
+              open="{open}" 
+              high="{high}" 
+              low="{low}" 
+              close="{close}"/>
+          </fc:candles>
+        </fc:CandlestickChart>
+      </VBox>
+    </content>
   </Page>
 </mvc:View>

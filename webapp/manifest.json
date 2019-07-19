@@ -14,33 +14,36 @@
     "models": {
       "": {
         "type": "sap.ui.model.json.JSONModel"
+      },
+      "view": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "rootView": {
       "viewName": "ck.marketdata.view.App",
       "type": "XML"
     },
-		"routing": {
-			"config": {
-				"routerClass": "sap.m.routing.Router",
-				"controlId": "app",
-				"viewType": "XML",
-				"controlAggregation": "pages",
-				"viewPath": "ck.marketdata.view",
-				"async": true
-			},
-			"routes": [
-				{
-        "pattern": "candles/{exchange}/{currency}/{asset}/{timeframe}",
-					"name": "candles",
-					"target": "candles"
-				}
-			],
-			"targets": {
-				"candles": {
-					"viewName": "Candles"
-				}
-			}
-		}
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlId": "app",
+        "viewType": "XML",
+        "controlAggregation": "pages",
+        "viewPath": "ck.marketdata.view",
+        "async": true
+      },
+      "routes": [
+        {
+          "pattern": "candles/{exchange}/{currency}/{asset}/{timeframe}:?query:",
+          "name": "candles",
+          "target": "candles"
+        }
+      ],
+      "targets": {
+        "candles": {
+          "viewName": "Candles"
+        }
+      }
+    }
   }
 }
