@@ -8,29 +8,40 @@
     showHeader="false">
     <subHeader>
       <Toolbar>
-        <ComboBox selectedKey="{view>/asset}" 
-          items="{Assets}" 
-          change="onAssetChange">
+        <Label text="Currency:"/>
+        <ComboBox maxWidth="8rem" 
+          selectedKey="{view>/currency}" 
+          items="{Currencies}" 
+          change="onCurrencyChange">
           <items>
             <core:Item text="{key}" 
               key="{key}"/>
           </items>
         </ComboBox>
-        <ComboBox selectedKey="{view>/timeframe}" 
-          items="{Exchange/Timeframes}" 
+        <Label text="Asset:"/>
+        <ComboBox id="asset" 
+          maxWidth="8rem" 
+          selectedKey="{view>/asset}" 
+          change="onAssetChange"/>
+        <Label text="Timeframe:"/>
+        <ComboBox maxWidth="6rem" 
+          selectedKey="{view>/timeframe}" 
+          items="{Timeframes}" 
           change="onTimeframeChange">
           <items>
             <core:Item text="{key}" 
               key="{key}"/>
           </items>
         </ComboBox>
-        <DateRangeSelection dateValue="{view>/start}" 
+        <Label text="Date Range:"/>
+        <DateRangeSelection width="18rem"  dateValue="{view>/start}" 
           secondDateValue="{view>/end}" 
           change="onDateRangeChange" />
       </Toolbar>
     </subHeader>
     <content>
-      <VBox height="100%" busy="{view>/busy}">
+      <VBox height="100%" 
+        busy="{view>/busy}">
         <fc:CandlestickChart candles="{candles>/value}" 
           padding="5 20 25 60">
           <fc:candles>

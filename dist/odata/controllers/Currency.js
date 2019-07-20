@@ -25,21 +25,19 @@ const odata_v4_server_1 = require("odata-v4-server");
 const Exchange_1 = require("../../engine/Exchange");
 const Asset_1 = require("../models/Asset");
 const Currency_1 = require("../models/Currency");
-const Exchange_2 = require("../models/Exchange");
 let CurrencyController = class CurrencyController extends odata_v4_server_1.ODataController {
     getById(key, exchangeKey) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const mSymbols = lodash_1.default.filter(yield Exchange_1.ExchangeEngine.getSymbols(exchangeKey), e => e.currency === key);
-            return new Currency_1.CurrencyModel({
-                key,
-                exchangeKey,
-                Assets: mSymbols.map(e => new Asset_1.AssetModel(e.asset))
-            });
+        return new Currency_1.CurrencyModel({
+            key,
+            exchangeKey
         });
     }
-    getExchange(result) {
-        const { exchangeKey: key } = result;
-        return new Exchange_2.ExchangeModel(key);
+    getAssets(result) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { key, exchangeKey } = result;
+            const mSymbols = lodash_1.default.filter(yield Exchange_1.ExchangeEngine.getSymbols(exchangeKey), e => e.currency === key);
+            return mSymbols.map(e => new Asset_1.AssetModel(e.asset));
+        });
     }
 };
 __decorate([
@@ -48,9 +46,9 @@ __decorate([
     __param(1, odata_v4_server_1.odata.key)
 ], CurrencyController.prototype, "getById", null);
 __decorate([
-    odata_v4_server_1.odata.GET("Exchange"),
+    odata_v4_server_1.odata.GET("Assets"),
     __param(0, odata_v4_server_1.odata.result)
-], CurrencyController.prototype, "getExchange", null);
+], CurrencyController.prototype, "getAssets", null);
 CurrencyController = __decorate([
     odata_v4_server_1.odata.type(Currency_1.CurrencyModel),
     odata_v4_server_1.Edm.EntitySet("Currency")

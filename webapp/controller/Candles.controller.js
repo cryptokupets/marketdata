@@ -4,9 +4,10 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
+    "sap/ui/core/Item",
     "ck/marketdata/thirdparty/moment-with-locales"
   ],
-  function(Controller, UIComponent) {
+  function(Controller, UIComponent, Item) {
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.Candles", {
@@ -31,21 +32,30 @@ sap.ui.define(
         var oViewModel = this.getView().getModel("view");
         oViewModel.setProperty("/exchange", sExchange);
         oViewModel.setProperty("/currency", sCurrency);
-        oViewModel.setProperty("/asset", mArguments.asset);
-        oViewModel.setProperty("/timeframe", mArguments.timeframe);
-        oViewModel.setProperty("/start", moment(mQuery.start).toDate());
-        oViewModel.setProperty("/end", moment(mQuery.end).toDate());
+        oViewModel.setProperty("/asset", sAsset);
+        oViewModel.setProperty("/timeframe", sTimeframe);
+        oViewModel.setProperty("/start", moment(sStart).toDate());
+        oViewModel.setProperty("/end", moment(sEnd).toDate());
 
         oView.bindElement({
+          path: "/Exchange('" + sExchange + "')",
+          parameters: {
+            $expand: "Currencies,Timeframes"
+          }
+        });
+
+        this.byId("asset").bindAggregation("items", {
           path:
             "/Currency(key='" +
             sCurrency +
             "',exchangeKey='" +
             sExchange +
-            "')",
-          parameters: {
-            $expand: "Exchange($expand=Timeframes)"
-          }
+            "')/Assets",
+          template: new Item({
+            text: "{key}",
+            key: "{key}"
+          }),
+          templateShareable: false
         });
 
         oViewModel.setProperty("/busy", true);
@@ -66,9 +76,14 @@ sap.ui.define(
               "',end='" +
               sEnd +
               "')"
-          ).finally(function() {
+          )
+          .finally(function() {
             oViewModel.setProperty("/busy", false);
           });
+      },
+
+      onCurrencyChange: function() {
+        this._changeRouteArguments();
       },
 
       onAssetChange: function() {

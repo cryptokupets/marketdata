@@ -23,7 +23,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = __importDefault(require("lodash"));
 const odata_v4_server_1 = require("odata-v4-server");
 const Exchange_1 = require("../../engine/Exchange");
-const Asset_1 = require("../models/Asset");
 const Currency_1 = require("../models/Currency");
 const Exchange_2 = require("../models/Exchange");
 const Timeframe_1 = require("../models/Timeframe");
@@ -38,11 +37,10 @@ let ExchangeController = class ExchangeController extends odata_v4_server_1.ODat
         return __awaiter(this, void 0, void 0, function* () {
             const { key: exchangeKey } = result;
             const mSymbols = lodash_1.default.groupBy(yield Exchange_1.ExchangeEngine.getSymbols(exchangeKey), e => e.currency);
-            return lodash_1.default.toPairs(mSymbols).map(p => {
+            return lodash_1.default.keys(mSymbols).map(k => {
                 return new Currency_1.CurrencyModel({
-                    key: p[0],
-                    exchangeKey,
-                    Assets: p[1].map(e => new Asset_1.AssetModel(e.asset))
+                    key: k,
+                    exchangeKey
                 });
             });
         });

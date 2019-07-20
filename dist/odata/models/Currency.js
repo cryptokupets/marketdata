@@ -8,10 +8,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const odata_v4_server_1 = require("odata-v4-server");
 const Asset_1 = require("./Asset");
-const Exchange_1 = require("./Exchange");
 class CurrencyModel {
-    constructor({ key, exchangeKey, Assets }) {
-        Object.assign(this, { key, exchangeKey, Assets });
+    constructor({ key, exchangeKey }) {
+        Object.assign(this, { key, exchangeKey });
     }
 }
 __decorate([
@@ -22,9 +21,6 @@ __decorate([
     odata_v4_server_1.Edm.Key,
     odata_v4_server_1.Edm.String
 ], CurrencyModel.prototype, "exchangeKey", void 0);
-__decorate([
-    odata_v4_server_1.Edm.EntityType(odata_v4_server_1.Edm.ForwardRef(() => Exchange_1.ExchangeModel))
-], CurrencyModel.prototype, "Exchange", void 0);
 __decorate([
     odata_v4_server_1.Edm.Collection(odata_v4_server_1.Edm.EntityType(odata_v4_server_1.Edm.ForwardRef(() => Asset_1.AssetModel)))
 ], CurrencyModel.prototype, "Assets", void 0);
