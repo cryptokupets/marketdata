@@ -4,7 +4,16 @@
     "type": "application",
     "applicationVersion": {
       "version": "1.0.0"
-    }
+    },
+		"dataSources": {
+			"default": {
+				"uri": "/odata/",
+				"type": "OData",
+				"settings": {
+					"odataVersion": "4.0"
+				}
+			}
+		}
   },
   "sap.ui": {
     "technology": "UI5"
@@ -12,13 +21,16 @@
   "sap.ui5": {
     "autoPrefixId": true,
     "models": {
-      "": {
-        "type": "sap.ui.model.json.JSONModel"
-      },
-      "timeframes": {
-        "type": "sap.ui.model.json.JSONModel"
-      },
-      "symbols": {
+			"": {
+				"dataSource": "default",
+				"settings": {
+					"autoExpandSelect": false,
+					"groupId": "$direct",
+					"synchronizationMode": "None",
+					"operationMode": "Server"
+				}
+			},
+      "candles": {
         "type": "sap.ui.model.json.JSONModel"
       },
       "view": {

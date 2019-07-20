@@ -36,7 +36,7 @@ class ExchangeEngine {
     static timeframeToMinutes(timeframe) {
         const d = {};
         d[timeframe.slice(0, 1).toLowerCase()] = +timeframe.slice(1);
-        return moment_1.default.duration(d).asMinutes(); // FIXME для месяца не сработает
+        return moment_1.default.duration(d).asMinutes();
     }
     static getCandles({ exchange, currency, asset, timeframe, start, end }) {
         return __awaiter(this, void 0, void 0, function* () {

@@ -18,46 +18,57 @@ sap.ui.define(
 
       _onRouteMatched: function(oEvent) {
         var mArguments = oEvent.getParameter("arguments");
+        var sCurrency = mArguments.currency;
+        var sExchange = mArguments.exchange;
+        var sAsset = mArguments.asset;
+        var sTimeframe = mArguments.timeframe;
+
         var mQuery = mArguments["?query"];
+        var sStart = mQuery.start;
+        var sEnd = mQuery.end;
+        var oView = this.getView();
 
         var oViewModel = this.getView().getModel("view");
-        oViewModel.setProperty("/exchange", mArguments.exchange);
-        oViewModel.setProperty("/currency", mArguments.currency);
+        oViewModel.setProperty("/exchange", sExchange);
+        oViewModel.setProperty("/currency", sCurrency);
         oViewModel.setProperty("/asset", mArguments.asset);
         oViewModel.setProperty("/timeframe", mArguments.timeframe);
-        oViewModel.setProperty(
-          "/start",
-          moment(mQuery ? mQuery.start : null).toDate()
-        );
-        oViewModel.setProperty(
-          "/end",
-          moment(mQuery ? mQuery.end : null).toDate()
-        );
-        // загрузить данные
-        var sURL =
-          "/api/candles/" +
-          mArguments.exchange +
-          "/" +
-          mArguments.currency +
-          "/" +
-          mArguments.asset +
-          "/" +
-          mArguments.timeframe;
+        oViewModel.setProperty("/start", moment(mQuery.start).toDate());
+        oViewModel.setProperty("/end", moment(mQuery.end).toDate());
 
-        if (mQuery && mQuery.start && mQuery.end) {
-          sURL += "?start=" + mQuery.start + "&" + "end=" + mQuery.end;
-        }
+        oView.bindElement({
+          path:
+            "/Currency(key='" +
+            sCurrency +
+            "',exchangeKey='" +
+            sExchange +
+            "')",
+          parameters: {
+            $expand: "Exchange($expand=Timeframes)"
+          }
+        });
 
-        this.getView()
-          .getModel()
-          .loadData(sURL);
+        oViewModel.setProperty("/busy", true);
 
-        this.getView()
-          .getModel("timeframes")
-          .loadData("/api/timeframes/" + mArguments.exchange);
-        this.getView()
-          .getModel("symbols")
-          .loadData("/api/symbols/" + mArguments.exchange);
+        oView
+          .getModel("candles")
+          .loadData(
+            "/odata/Exchange('" +
+              sExchange +
+              "')/MarketData.getCandles(currency='" +
+              sCurrency +
+              "',timeframe='" +
+              sTimeframe +
+              "',asset='" +
+              sAsset +
+              "',start='" +
+              sStart +
+              "',end='" +
+              sEnd +
+              "')"
+          ).finally(function() {
+            oViewModel.setProperty("/busy", false);
+          });
       },
 
       onAssetChange: function() {

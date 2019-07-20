@@ -13,9 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Exchange_1 = require("./engine/Exchange");
+const server_1 = require("./odata/server");
 const app = express_1.default();
 const port = 8080; // default port to listen
 app.use(express_1.default.static(__dirname + "/../webapp"));
+app.use("/odata", server_1.MarketDataServer.create());
 app.get("/api/symbols/:exchange", (req, res) => __awaiter(this, void 0, void 0, function* () {
     const { exchange } = req.params;
     res.json(yield Exchange_1.ExchangeEngine.getSymbols(exchange));

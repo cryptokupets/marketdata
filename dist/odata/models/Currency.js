@@ -1,0 +1,32 @@
+"use strict";
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const odata_v4_server_1 = require("odata-v4-server");
+const Asset_1 = require("./Asset");
+const Exchange_1 = require("./Exchange");
+class CurrencyModel {
+    constructor({ key, exchangeKey, Assets }) {
+        Object.assign(this, { key, exchangeKey, Assets });
+    }
+}
+__decorate([
+    odata_v4_server_1.Edm.Key,
+    odata_v4_server_1.Edm.String
+], CurrencyModel.prototype, "key", void 0);
+__decorate([
+    odata_v4_server_1.Edm.Key,
+    odata_v4_server_1.Edm.String
+], CurrencyModel.prototype, "exchangeKey", void 0);
+__decorate([
+    odata_v4_server_1.Edm.EntityType(odata_v4_server_1.Edm.ForwardRef(() => Exchange_1.ExchangeModel))
+], CurrencyModel.prototype, "Exchange", void 0);
+__decorate([
+    odata_v4_server_1.Edm.Collection(odata_v4_server_1.Edm.EntityType(odata_v4_server_1.Edm.ForwardRef(() => Asset_1.AssetModel)))
+], CurrencyModel.prototype, "Assets", void 0);
+exports.CurrencyModel = CurrencyModel;
+//# sourceMappingURL=Currency.js.map
