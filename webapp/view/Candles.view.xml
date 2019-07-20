@@ -8,6 +8,7 @@
     showHeader="false">
     <subHeader>
       <Toolbar>
+        <Button icon="sap-icon://nav-back" press="onBackPress"/>
         <Label text="Currency:"/>
         <ComboBox maxWidth="8rem" 
           selectedKey="{view>/currency}" 

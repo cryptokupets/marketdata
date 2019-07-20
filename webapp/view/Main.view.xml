@@ -1,0 +1,14 @@
+<mvc:View controllerName="ck.marketdata.controller.Main" 
+  xmlns:mvc="sap.ui.core.mvc" 
+  xmlns="sap.m" 
+  displayBlock="true">
+  <Page enableScrolling="false" 
+    showHeader="false">
+    <GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" 
+      header="HitBTC" 
+      subheader="hitbtc.com"
+      mode="HeaderMode"
+      press="onPress">
+    </GenericTile>
+  </Page>
+</mvc:View>

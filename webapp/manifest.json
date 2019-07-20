@@ -52,14 +52,24 @@
       },
       "routes": [
         {
-          "pattern": "candles/{exchange}/{currency}/{asset}/{timeframe}:?query:",
+          "pattern": "",
+          "name": "main",
+          "target": "main"
+        },
+        {
+          "pattern": "candles:?query:",
           "name": "candles",
           "target": "candles"
         }
       ],
       "targets": {
+        "main": {
+          "viewName": "Main",
+					"viewLevel": 0
+        },
         "candles": {
-          "viewName": "Candles"
+          "viewName": "Candles",
+					"viewLevel": 1
         }
       }
     }

@@ -18,18 +18,34 @@ sap.ui.define(
       },
 
       _onRouteMatched: function(oEvent) {
-        var mArguments = oEvent.getParameter("arguments");
-        var sCurrency = mArguments.currency;
-        var sExchange = mArguments.exchange;
-        var sAsset = mArguments.asset;
-        var sTimeframe = mArguments.timeframe;
-
-        var mQuery = mArguments["?query"];
-        var sStart = mQuery.start;
-        var sEnd = mQuery.end;
         var oView = this.getView();
-
         var oViewModel = this.getView().getModel("view");
+        var mQuery = oEvent.getParameter("arguments")["?query"];
+
+        var sExchange = mQuery.exchange
+          ? mQuery.exchange
+          : oViewModel.getProperty("/exchange");
+
+        var sCurrency = mQuery.currency
+          ? mQuery.currency
+          : oViewModel.getProperty("/currency");
+
+        var sAsset = mQuery.asset
+          ? mQuery.asset
+          : oViewModel.getProperty("/asset");
+          
+        var sTimeframe = mQuery.timeframe
+          ? mQuery.timeframe
+          : oViewModel.getProperty("/timeframe");
+
+        var sStart = mQuery.start
+          ? mQuery.start
+          : oViewModel.getProperty("/start");
+
+        var sEnd = mQuery.end
+          ? mQuery.end
+          : oViewModel.getProperty("/end");
+
         oViewModel.setProperty("/exchange", sExchange);
         oViewModel.setProperty("/currency", sCurrency);
         oViewModel.setProperty("/asset", sAsset);
@@ -103,12 +119,12 @@ sap.ui.define(
         UIComponent.getRouterFor(this).navTo(
           "candles",
           {
-            exchange: oViewModel.getProperty("/exchange"),
-            currency: oViewModel.getProperty("/currency"),
-            asset: oViewModel.getProperty("/asset"),
-            timeframe: oViewModel.getProperty("/timeframe"),
             query: {
-              start: moment(oViewModel.getProperty("/start"))
+              exchange: oViewModel.getProperty("/exchange"),
+              currency: oViewModel.getProperty("/currency"),
+              asset: oViewModel.getProperty("/asset"),
+              timeframe: oViewModel.getProperty("/timeframe"),
+                start: moment(oViewModel.getProperty("/start"))
                 .format()
                 .slice(0, 19),
               end: moment(oViewModel.getProperty("/end"))
@@ -120,8 +136,8 @@ sap.ui.define(
         );
       },
 
-      onNavBack: function() {
-        window.history.go(-1);
+      onBackPress: function() {
+        UIComponent.getRouterFor(this).navTo("main");
       }
     });
   }
