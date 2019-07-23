@@ -3,12 +3,14 @@
   xmlns:core="sap.ui.core" 
   xmlns="sap.m" 
   xmlns:fc="ui5lab.fc" 
+  xmlns:fci="ui5lab.fc.indicator" 
   displayBlock="true">
   <Page enableScrolling="false" 
     showHeader="false">
     <subHeader>
       <Toolbar>
-        <Button icon="sap-icon://nav-back" press="onBackPress"/>
+        <Button icon="sap-icon://nav-back" 
+          press="onBackPress"/>
         <Label text="Currency:"/>
         <ComboBox maxWidth="8rem" 
           selectedKey="{view>/currency}" 
@@ -35,7 +37,8 @@
           </items>
         </ComboBox>
         <Label text="Date Range:"/>
-        <DateRangeSelection width="18rem"  dateValue="{view>/start}" 
+        <DateRangeSelection width="18rem" 
+          dateValue="{view>/start}" 
           secondDateValue="{view>/end}" 
           change="onDateRangeChange" />
       </Toolbar>
@@ -43,16 +46,31 @@
     <content>
       <VBox height="100%" 
         busy="{view>/busy}">
-        <fc:CandlestickChart items="{candles>/value}" 
+        <fc:CandlestickChart items="{buffer>/candles}" 
           padding="5 20 25 60">
+          <fc:layoutData>
+            <FlexItemData minHeight="500px" />
+          </fc:layoutData>
           <fc:items>
-            <fc:Candle time="{candles>time}" 
-              open="{candles>open}" 
-              high="{candles>high}" 
-              low="{candles>low}" 
-              close="{candles>close}"/>
+            <fc:Candle time="{buffer>time}" 
+              open="{buffer>open}" 
+              high="{buffer>high}" 
+              low="{buffer>low}" 
+              close="{buffer>close}"/>
           </fc:items>
         </fc:CandlestickChart>
+        <fci:CCIT items="{buffer>/indicatorOutputs/0/output}" 
+          overboughtZone="100" 
+          oversoldZone="-100" 
+          padding="5 20 25 60">
+          <fci:layoutData>
+            <FlexItemData minHeight="200px" />
+          </fci:layoutData>
+          <fci:items>
+            <fci:CCITItem time="{buffer>time}" 
+              y="{buffer>values/0}"/>
+          </fci:items>
+        </fci:CCIT>
       </VBox>
     </content>
   </Page>

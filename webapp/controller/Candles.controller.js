@@ -33,7 +33,7 @@ sap.ui.define(
         var sAsset = mQuery.asset
           ? mQuery.asset
           : oViewModel.getProperty("/asset");
-          
+
         var sTimeframe = mQuery.timeframe
           ? mQuery.timeframe
           : oViewModel.getProperty("/timeframe");
@@ -42,9 +42,7 @@ sap.ui.define(
           ? mQuery.start
           : oViewModel.getProperty("/start");
 
-        var sEnd = mQuery.end
-          ? mQuery.end
-          : oViewModel.getProperty("/end");
+        var sEnd = mQuery.end ? mQuery.end : oViewModel.getProperty("/end");
 
         oViewModel.setProperty("/exchange", sExchange);
         oViewModel.setProperty("/currency", sCurrency);
@@ -77,21 +75,21 @@ sap.ui.define(
         oViewModel.setProperty("/busy", true);
 
         oView
-          .getModel("candles")
+          .getModel("buffer")
           .loadData(
-            "/odata/Exchange('" +
+            "/odata/Buffer(exchangeKey='" +
               sExchange +
-              "')/MarketData.getCandles(currency='" +
+              "',currencyKey='" +
               sCurrency +
               "',timeframe='" +
               sTimeframe +
-              "',asset='" +
+              "',assetKey='" +
               sAsset +
               "',start='" +
               sStart +
               "',end='" +
               sEnd +
-              "')"
+              "',indicatorInputs='cci 14')"
           )
           .finally(function() {
             oViewModel.setProperty("/busy", false);
@@ -124,7 +122,7 @@ sap.ui.define(
               currency: oViewModel.getProperty("/currency"),
               asset: oViewModel.getProperty("/asset"),
               timeframe: oViewModel.getProperty("/timeframe"),
-                start: moment(oViewModel.getProperty("/start"))
+              start: moment(oViewModel.getProperty("/start"))
                 .format()
                 .slice(0, 19),
               end: moment(oViewModel.getProperty("/end"))

@@ -30,7 +30,7 @@
 					"operationMode": "Server"
 				}
 			},
-      "candles": {
+      "buffer": {
         "type": "sap.ui.model.json.JSONModel"
       },
       "view": {
