@@ -1,0 +1,1 @@
+sap.ui.define(["sap/ui/core/Control","ui5lab/fc/library"],function(t){"use strict";return t.extend("ui5lab.fc.ChartItem",{metadata:{properties:{time:"string"}}})});

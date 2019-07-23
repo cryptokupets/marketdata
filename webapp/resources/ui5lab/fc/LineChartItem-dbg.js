@@ -3,13 +3,10 @@ sap.ui.define(["ui5lab/fc/ChartItem", "ui5lab/fc/library"], function(
 ) {
   "use strict";
 
-  return ChartItem.extend("ui5lab.fc.Candle", {
+  return ChartItem.extend("ui5lab.fc.LineChartItem", {
     metadata: {
       properties: {
-        open: "float",
-        high: "float",
-        low: "float",
-        close: "float"
+        y: "float"
       }
     }
   });

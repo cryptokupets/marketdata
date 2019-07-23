@@ -43,15 +43,15 @@
     <content>
       <VBox height="100%" 
         busy="{view>/busy}">
-        <fc:CandlestickChart candles="{candles>/value}" 
+        <fc:CandlestickChart items="{candles>/value}" 
           padding="5 20 25 60">
-          <fc:candles>
-            <fc:Candle x="{candles>time}" 
+          <fc:items>
+            <fc:Candle time="{candles>time}" 
               open="{candles>open}" 
               high="{candles>high}" 
               low="{candles>low}" 
               close="{candles>close}"/>
-          </fc:candles>
+          </fc:items>
         </fc:CandlestickChart>
       </VBox>
     </content>

@@ -6,7 +6,14 @@ sap.ui.define(["jquery.sap.global", "sap/ui/core/library"], function() {
     dependencies: ["sap.ui.core", "sap.m"],
     types: [],
     interfaces: [],
-    controls: ["ui5lab.fc.CandlestickChart", "ui5lab.fc.Candle"],
+    controls: [
+      "ui5lab.fc.Candle",
+      "ui5lab.fc.CandlestickChart",
+      "ui5lab.fc.Chart",
+      "ui5lab.fc.ChartItem",
+      "ui5lab.fc.LineChart",
+      "ui5lab.fc.LineChartItem"
+    ],
     elements: [],
     noLibraryCSS: false,
     version: "1.0.0"

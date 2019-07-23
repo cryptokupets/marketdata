@@ -1,1 +1,1 @@
-sap.ui.define(["sap/ui/core/Control"],function(e){"use strict";return e.extend("ui5lab.fc.Candle",{metadata:{properties:{x:"any",open:"float",high:"float",low:"float",close:"float"}}})});
+sap.ui.define(["ui5lab/fc/ChartItem","ui5lab/fc/library"],function(a){"use strict";return a.extend("ui5lab.fc.Candle",{metadata:{properties:{open:"float",high:"float",low:"float",close:"float"}}})});

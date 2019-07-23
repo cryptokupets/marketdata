@@ -23,10 +23,10 @@
   },
   "sap.ui5": {
     "dependencies": {
-      "minUI5Version": "1.67",
+      "minUI5Version": "1.68",
       "libs": {
         "sap.ui.core": {
-          "minVersion": "1.67.1"
+          "minVersion": "1.68.1"
         }
       }
     },
@@ -34,8 +34,12 @@
       "i18n": false,
       "content": {
         "controls": [
+          "ui5lab.fc.Candle",
           "ui5lab.fc.CandlestickChart",
-          "ui5lab.fc.Candle"
+          "ui5lab.fc.Chart",
+          "ui5lab.fc.ChartItem",
+          "ui5lab.fc.LineChart",
+          "ui5lab.fc.LineChartItem"
         ],
         "elements": [],
         "types": [],

@@ -10,10 +10,14 @@ sap.ui.define(
   function(Chart) {
     "use strict";
 
-    return Chart.extend("ui5lab.fc.CandlestickChart", {
+    return Chart.extend("ui5lab.fc.indicator.CCIT", {
       metadata: {
+        properties: {
+          overboughtZone: "float",
+          oversoldZone: "float"
+        },
         aggregations: {
-          items: { type: "ui5lab.fc.Candle", multiple: true }
+          items: { type: "ui5lab.fc.indicator.CCITItem", multiple: true }
         }
       },
 
@@ -28,8 +32,8 @@ sap.ui.define(
         if (!aItems || aItems.length < 2) return;
 
         // подготовка переменных
-        var fMin = d3.min(aItems, e => e.getLow());
-        var fMax = d3.max(aItems, e => e.getHigh());
+        var fMin = d3.min(aItems, e => e.getY());
+        var fMax = d3.max(aItems, e => e.getY());
         var fCandleBodyWidth = 0.8; // TODO заменить на ось категорий
 
         // подготовка пространства
@@ -65,28 +69,20 @@ sap.ui.define(
         // область отображения данных
         var series = plotArea.select(".fcSeries");
 
+        var fOverboughtZone = oControl.getOverboughtZone();
+        var fOversoldZone = oControl.getOversoldZone();
+
         var candles = series
           .selectAll()
           .data(aItems)
           .enter()
           .append("g")
-          .classed("fcBullish", e => e.getClose() >= e.getOpen())
-          .classed("fcBearish", e => e.getClose() < e.getOpen());
-
-        // тень свечи
-        candles
-          .append("line")
-          .classed("fcCandleShadow", true)
-          .attr(
-            "x1",
-            e => xScale(moment(e.getTime()).toDate()) + fTickWidth / 2
-          )
-          .attr(
-            "x2",
-            e => xScale(moment(e.getTime()).toDate()) + fTickWidth / 2
-          )
-          .attr("y1", e => yScale(e.getHigh()))
-          .attr("y2", e => yScale(e.getLow()));
+          .classed("fcBullish", e => e.getY() > fOverboughtZone)
+          .classed("fcBearish", e => e.getY() < fOversoldZone)
+          .classed(
+            "fcNone",
+            e => e.getY() >= fOversoldZone && e.getY() <= fOverboughtZone
+          );
 
         // тело свечи
         candles
@@ -98,12 +94,11 @@ sap.ui.define(
               xScale(moment(e.getTime()).toDate()) +
               ((1 - fCandleBodyWidth) * fTickWidth) / 2
           )
-          .attr("y", e => yScale(Math.max(e.getOpen(), e.getClose())))
+          .attr("y", e => yScale(Math.max(e.getY(), 0)))
           .attr("height", e =>
             Math.max(
               1,
-              yScale(Math.min(e.getOpen(), e.getClose())) -
-                yScale(Math.max(e.getOpen(), e.getClose()))
+              yScale(Math.min(e.getY(), 0)) - yScale(Math.max(e.getY(), 0))
             )
           )
           .attr("width", fCandleBodyWidth * fTickWidth);
