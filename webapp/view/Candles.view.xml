@@ -1,6 +1,8 @@
 <mvc:View controllerName="ck.marketdata.controller.Candles" 
   xmlns:mvc="sap.ui.core.mvc" 
   xmlns:core="sap.ui.core" 
+  xmlns:l="sap.ui.layout" 
+  xmlns:form="sap.ui.layout.form" 
   xmlns="sap.m" 
   xmlns:fc="ui5lab.fc" 
   xmlns:fci="ui5lab.fc.indicator" 
@@ -44,34 +46,97 @@
       </Toolbar>
     </subHeader>
     <content>
-      <VBox height="100%" 
-        busy="{view>/busy}">
-        <fc:CandlestickChart items="{buffer>/candles}" 
-          padding="5 20 25 60">
-          <fc:layoutData>
-            <FlexItemData minHeight="500px" />
-          </fc:layoutData>
-          <fc:items>
-            <fc:Candle time="{buffer>time}" 
-              open="{buffer>open}" 
-              high="{buffer>high}" 
-              low="{buffer>low}" 
-              close="{buffer>close}"/>
-          </fc:items>
-        </fc:CandlestickChart>
-        <fci:CCIT items="{buffer>/indicatorOutputs/0/output}" 
-          overboughtZone="100" 
-          oversoldZone="-100" 
-          padding="5 20 25 60">
-          <fci:layoutData>
-            <FlexItemData minHeight="200px" />
-          </fci:layoutData>
-          <fci:items>
-            <fci:CCITItem time="{buffer>time}" 
-              y="{buffer>values/0}"/>
-          </fci:items>
-        </fci:CCIT>
-      </VBox>
+      <l:ResponsiveSplitter>
+        <l:PaneContainer>
+          <l:SplitPane>
+            <form:Form editable="true">
+              <form:layout>
+                <form:ResponsiveGridLayout labelSpanXL="12" 
+                  labelSpanL="12" 
+                  labelSpanM="12" 
+                  labelSpanS="12" 
+                  adjustLabelSpan="false" 
+                  emptySpanXL="0" 
+                  emptySpanL="0" 
+                  emptySpanM="0" 
+                  emptySpanS="0" 
+                  columnsXL="1" 
+                  columnsL="1" 
+                  columnsM="1"/>
+              </form:layout>
+              <form:formContainers>
+                <form:FormContainer>
+                  <form:formElements>
+                    <form:FormElement label="Currency">
+                      <ComboBox selectedKey="BTC">
+                        <items>
+                          <core:Item key="BTC" 
+                            text="BTC"/>
+                          <core:Item key="USD" 
+                            text="USD"/>
+                        </items>
+                      </ComboBox>
+                    </form:FormElement>
+                    <form:FormElement label="Asset">
+                      <ComboBox selectedKey="XMR">
+                        <items>
+                          <core:Item key="XMR" 
+                            text="XMR"/>
+                          <core:Item key="XRP" 
+                            text="XRP"/>
+                        </items>
+                      </ComboBox>
+                    </form:FormElement>
+                    <form:FormElement label="Timeframe">
+                      <ComboBox selectedKey="M15">
+                        <items>
+                          <core:Item key="M15" 
+                            text="M15"/>
+                          <core:Item key="H1" 
+                            text="H1"/>
+                        </items>
+                      </ComboBox>
+                    </form:FormElement>
+                    <form:FormElement label="Range">
+                      <DateRangeSelection/>
+                    </form:FormElement>
+                  </form:formElements>
+                </form:FormContainer>
+              </form:formContainers>
+            </form:Form>
+          </l:SplitPane>
+          <l:SplitPane>
+            <VBox height="100%" 
+              busy="{view>/busy}">
+              <fc:CandlestickChart items="{buffer>/candles}" 
+                padding="5 20 25 60">
+                <fc:layoutData>
+                  <FlexItemData minHeight="500px" />
+                </fc:layoutData>
+                <fc:items>
+                  <fc:Candle time="{buffer>time}" 
+                    open="{buffer>open}" 
+                    high="{buffer>high}" 
+                    low="{buffer>low}" 
+                    close="{buffer>close}"/>
+                </fc:items>
+              </fc:CandlestickChart>
+              <fci:CCIT items="{buffer>/indicatorOutputs/0/output}" 
+                overboughtZone="100" 
+                oversoldZone="-100" 
+                padding="5 20 25 60">
+                <fci:layoutData>
+                  <FlexItemData minHeight="200px" />
+                </fci:layoutData>
+                <fci:items>
+                  <fci:CCITItem time="{buffer>time}" 
+                    y="{buffer>values/0}"/>
+                </fci:items>
+              </fci:CCIT>
+            </VBox>
+          </l:SplitPane>
+        </l:PaneContainer>
+      </l:ResponsiveSplitter>
     </content>
   </Page>
 </mvc:View>

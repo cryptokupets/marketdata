@@ -1,1 +1,0 @@
-sap.ui.define(["ui5lab/fc/ChartItem","ui5lab/fc/library"],function(t){"use strict";return t.extend("ui5lab.fc.LineChartItem",{metadata:{properties:{y:"float"}}})});
