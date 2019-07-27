@@ -8,43 +8,9 @@
   xmlns:fci="ui5lab.fc.indicator" 
   displayBlock="true">
   <Page enableScrolling="false" 
-    showHeader="false">
-    <subHeader>
-      <Toolbar>
-        <Button icon="sap-icon://nav-back" 
-          press="onBackPress"/>
-        <Label text="Currency:"/>
-        <ComboBox maxWidth="8rem" 
-          selectedKey="{view>/currency}" 
-          items="{Currencies}" 
-          change="onCurrencyChange">
-          <items>
-            <core:Item text="{key}" 
-              key="{key}"/>
-          </items>
-        </ComboBox>
-        <Label text="Asset:"/>
-        <ComboBox id="asset" 
-          maxWidth="8rem" 
-          selectedKey="{view>/asset}" 
-          change="onAssetChange"/>
-        <Label text="Timeframe:"/>
-        <ComboBox maxWidth="6rem" 
-          selectedKey="{view>/timeframe}" 
-          items="{Timeframes}" 
-          change="onTimeframeChange">
-          <items>
-            <core:Item text="{key}" 
-              key="{key}"/>
-          </items>
-        </ComboBox>
-        <Label text="Date Range:"/>
-        <DateRangeSelection width="18rem" 
-          dateValue="{view>/start}" 
-          secondDateValue="{view>/end}" 
-          change="onDateRangeChange" />
-      </Toolbar>
-    </subHeader>
+    showNavButton="true" 
+    navButtonPress="onBackPress" 
+    showHeader="true">
     <content>
       <l:ResponsiveSplitter>
         <l:PaneContainer>
@@ -68,37 +34,37 @@
                 <form:FormContainer>
                   <form:formElements>
                     <form:FormElement label="Currency">
-                      <ComboBox selectedKey="BTC">
+                      <ComboBox selectedKey="{view>/currency}" 
+                        maxWidth="8rem" 
+                        items="{Currencies}" 
+                        change="onCurrencyChange">
                         <items>
-                          <core:Item key="BTC" 
-                            text="BTC"/>
-                          <core:Item key="USD" 
-                            text="USD"/>
+                          <core:Item text="{key}" 
+                            key="{key}"/>
                         </items>
                       </ComboBox>
                     </form:FormElement>
                     <form:FormElement label="Asset">
-                      <ComboBox selectedKey="XMR">
-                        <items>
-                          <core:Item key="XMR" 
-                            text="XMR"/>
-                          <core:Item key="XRP" 
-                            text="XRP"/>
-                        </items>
-                      </ComboBox>
+                      <ComboBox id="asset" 
+                        maxWidth="8rem" 
+                        selectedKey="{view>/asset}" 
+                        change="onAssetChange"/>
                     </form:FormElement>
                     <form:FormElement label="Timeframe">
-                      <ComboBox selectedKey="M15">
+                      <ComboBox selectedKey="{view>/timeframe}" 
+                        maxWidth="8rem" 
+                        items="{Timeframes}" 
+                        change="onTimeframeChange">
                         <items>
-                          <core:Item key="M15" 
-                            text="M15"/>
-                          <core:Item key="H1" 
-                            text="H1"/>
+                          <core:Item text="{key}" 
+                            key="{key}"/>
                         </items>
                       </ComboBox>
                     </form:FormElement>
                     <form:FormElement label="Range">
-                      <DateRangeSelection/>
+                      <DateRangeSelection dateValue="{view>/start}" 
+                        secondDateValue="{view>/end}" 
+                        change="onDateRangeChange" />
                     </form:FormElement>
                   </form:formElements>
                 </form:FormContainer>
