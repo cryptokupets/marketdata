@@ -1,0 +1,59 @@
+<mvc:View controllerName="ck.marketdata.controller.Backtests" 
+	xmlns:mvc="sap.ui.core.mvc" 
+	xmlns="sap.m">
+	<Page title="Backtests" 
+		showNavButton="true" 
+		navButtonPress=".onNavBack">
+		<content>
+			<Table id="backtests" 
+				items="{Backtests}" 
+				itemPress=".onBacktestPress" 
+				inset="false">
+				<headerToolbar>
+					<Toolbar>
+						<Title text="Backtest"/>
+						<ToolbarSpacer />
+						<Button icon="sap-icon://add" 
+							press=".onAddBacktestPress"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text text="Exchange"/>
+					</Column>
+					<Column>
+						<Text text="Currency"/>
+					</Column>
+					<Column>
+						<Text text="Asset"/>
+					</Column>
+					<Column>
+						<Text text="Timeframe"/>
+					</Column>
+					<Column>
+						<Text text="Range"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem type="Active">
+						<cells>
+							<Text text="{exchangeKey}"/>
+						</cells>
+						<cells>
+							<Text text="{currencyKey}"/>
+						</cells>
+						<cells>
+							<Text text="{assetKey}"/>
+						</cells>
+						<cells>
+							<Text text="{timeframe}"/>
+						</cells>
+						<cells>
+							<Text text="{start} {end}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</content>
+	</Page>
+</mvc:View>
