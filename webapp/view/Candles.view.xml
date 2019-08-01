@@ -4,8 +4,8 @@
   xmlns:l="sap.ui.layout" 
   xmlns:form="sap.ui.layout.form" 
   xmlns="sap.m" 
-  xmlns:fc="ui5lab.fc" 
-  xmlns:fci="ui5lab.fc.indicator" 
+  xmlns:chart="openui5.fc" 
+  xmlns:indicator="openui5.fc.indicator" 
   displayBlock="true">
   <Page enableScrolling="false" 
     showNavButton="true" 
@@ -74,31 +74,31 @@
           <l:SplitPane>
             <VBox height="100%" 
               busy="{view>/busy}">
-              <fc:CandlestickChart items="{buffer>/candles}" 
-                padding="5 20 25 60">
-                <fc:layoutData>
-                  <FlexItemData minHeight="500px" />
-                </fc:layoutData>
-                <fc:items>
-                  <fc:Candle time="{buffer>time}" 
+              <chart:Chart height="500px" 
+                padding="5 20 25 60" 
+                start="{view>/start}" 
+                end="{view>/end}" 
+                timeframe="15">
+                <chart:CandlestickChart items="{buffer>/candles}">
+                  <chart:Candle time="{buffer>time}" 
                     open="{buffer>open}" 
                     high="{buffer>high}" 
                     low="{buffer>low}" 
                     close="{buffer>close}"/>
-                </fc:items>
-              </fc:CandlestickChart>
-              <fci:CCIT items="{buffer>/indicatorOutputs/0/output}" 
-                overboughtZone="100" 
-                oversoldZone="-100" 
-                padding="5 20 25 60">
-                <fci:layoutData>
-                  <FlexItemData minHeight="200px" />
-                </fci:layoutData>
-                <fci:items>
-                  <fci:CCITItem time="{buffer>time}" 
-                    y="{buffer>values/0}"/>
-                </fci:items>
-              </fci:CCIT>
+                </chart:CandlestickChart>
+              </chart:Chart>
+              <chart:Chart height="200px" 
+                padding="5 20 25 60" 
+                start="{view>/start}" 
+                end="{view>/end}" 
+                timeframe="15">
+                <indicator:CCIOZ items="{buffer>/indicatorOutputs/0/output}" 
+                  overboughtZone="100" 
+                  oversoldZone="-100">
+                  <chart:LineChartItem time="{buffer>time}" 
+                    value="{buffer>values/0}"/>
+                </indicator:CCIOZ>
+              </chart:Chart>
             </VBox>
           </l:SplitPane>
         </l:PaneContainer>
