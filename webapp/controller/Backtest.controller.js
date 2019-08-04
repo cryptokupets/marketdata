@@ -20,7 +20,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
       oView.bindElement({
         path: "/Backtest('" + sBacktestId + "')",
         parameters: {
-          $expand: "Exchange($expand=Currencies)"
+          $expand: "Exchange($expand=Currencies,Timeframes)"
         },
         events: {
           dataReceived: function() {
@@ -52,6 +52,22 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
 
     onCurrencyChange: function() {
       this._bindAssets();
+    },
+
+    onRefresh: function() {
+      var oView = this.getView();
+      var oCandlestick = this.byId("candlestick");
+      // var oIndicator0 = this.byId("indicator0");
+      var oBindingContext = oView.getBindingContext();
+      var sBacktestId = oBindingContext.getProperty("_id");
+
+      oView
+        .getModel("buffer")
+        .loadData("/odata/Backtest('" + sBacktestId + "')/Output")
+        .finally(function() {
+          oCandlestick.refresh();
+          // oIndicator0.refresh();
+        });
     },
 
     onBackPress: function() {
