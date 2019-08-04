@@ -73,6 +73,8 @@ sap.ui.define(
         });
 
         oViewModel.setProperty("/busy", true);
+        var oCandlestick = this.byId("candlestick");
+        var oIndicator0 = this.byId("indicator0");
 
         oView
           .getModel("buffer")
@@ -92,6 +94,8 @@ sap.ui.define(
               "',indicatorInputs='cci 14')"
           )
           .finally(function() {
+            oCandlestick.refresh();
+            oIndicator0.refresh();
             oViewModel.setProperty("/busy", false);
           });
       },

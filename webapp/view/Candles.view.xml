@@ -74,7 +74,8 @@
           <l:SplitPane>
             <VBox height="100%" 
               busy="{view>/busy}">
-              <chart:Chart height="500px" 
+              <chart:Chart id="candlestick"
+                height="500px" 
                 padding="5 20 25 60" 
                 start="{view>/start}" 
                 end="{view>/end}" 
@@ -87,7 +88,8 @@
                     close="{buffer>close}"/>
                 </chart:CandlestickChart>
               </chart:Chart>
-              <chart:Chart height="200px" 
+              <chart:Chart id="indicator0"
+                height="200px" 
                 padding="5 20 25 60" 
                 start="{view>/start}" 
                 end="{view>/end}" 
