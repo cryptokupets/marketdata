@@ -1,8 +1,9 @@
-<mvc:View controllerName="ck.marketdata.controller.Candles" 
+<mvc:View controllerName="ck.marketdata.controller.Backtest" 
   xmlns:mvc="sap.ui.core.mvc" 
   xmlns:core="sap.ui.core" 
   xmlns:l="sap.ui.layout" 
   xmlns:form="sap.ui.layout.form" 
+  xmlns:codeeditor="sap.ui.codeeditor"
   xmlns="sap.m" 
   xmlns:chart="openui5.fc" 
   xmlns:indicator="openui5.fc.indicator" 
@@ -34,9 +35,9 @@
                 <form:FormContainer>
                   <form:formElements>
                     <form:FormElement label="Currency">
-                      <ComboBox selectedKey="{view>/currency}" 
+                      <ComboBox selectedKey="{currencyKey}" 
                         maxWidth="8rem" 
-                        items="{Currencies}" 
+                        items="{Exchange/Currencies}" 
                         change="onCurrencyChange">
                         <items>
                           <core:Item text="{key}" 
@@ -47,34 +48,34 @@
                     <form:FormElement label="Asset">
                       <ComboBox id="asset" 
                         maxWidth="8rem" 
-                        selectedKey="{view>/asset}" 
+                        selectedKey="{assetKey}" 
                         change="onAssetChange"/>
                     </form:FormElement>
-                    <form:FormElement label="Timeframe">
-                      <ComboBox selectedKey="{view>/timeframe}" 
+                    <!-- <form:FormElement label="Timeframe">
+                      <ComboBox selectedKey="{timeframe}" 
                         maxWidth="8rem" 
-                        items="{Timeframes}" 
+                        items="{exchange>Timeframes}" 
                         change="onTimeframeChange">
                         <items>
-                          <core:Item text="{key}" 
-                            key="{key}"/>
+                          <core:Item text="{exchange>key}" 
+                            key="{exchange>key}"/>
                         </items>
                       </ComboBox>
                     </form:FormElement>
                     <form:FormElement label="Range">
-                      <DateRangeSelection dateValue="{view>/start}" 
-                        secondDateValue="{view>/end}" 
+                      <DateRangeSelection dateValue="{start}" 
+                        secondDateValue="{end}" 
                         change="onDateRangeChange" />
-                    </form:FormElement>
-                    <form:FormElement label="Strategy">
-                      <codeeditor:CodeEditor editable="true" value="{view>/strategyCode}"/>
-                    </form:FormElement>
+                    </form:FormElement> -->
                   </form:formElements>
                 </form:FormContainer>
               </form:formContainers>
             </form:Form>
           </l:SplitPane>
-          <l:SplitPane>
+						<l:SplitPane>
+							<codeeditor:CodeEditor editable="true" value="{strategyCode}" height="100%"/>
+						</l:SplitPane>
+          <!-- <l:SplitPane>
             <VBox height="100%" 
               busy="{view>/busy}">
               <chart:Chart id="candlestick"
@@ -105,7 +106,7 @@
                 </indicator:CCIOZ>
               </chart:Chart>
             </VBox>
-          </l:SplitPane>
+          </l:SplitPane> -->
         </l:PaneContainer>
       </l:ResponsiveSplitter>
     </content>

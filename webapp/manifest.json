@@ -53,22 +53,22 @@
       "routes": [
         {
           "pattern": "",
-          "name": "main",
-          "target": "main"
+          "name": "backtests",
+          "target": "backtests"
         },
         {
-          "pattern": "candles:?query:",
-          "name": "candles",
-          "target": "candles"
+          "pattern": "backtest/{id}",
+          "name": "backtest",
+          "target": "backtest"
         }
       ],
       "targets": {
-        "main": {
-          "viewName": "Main",
+        "backtests": {
+          "viewName": "Backtests",
 					"viewLevel": 0
         },
-        "candles": {
-          "viewName": "Candles",
+        "backtest": {
+          "viewName": "Backtest",
 					"viewLevel": 1
         }
       }

@@ -6,7 +6,7 @@
 		navButtonPress=".onNavBack">
 		<content>
 			<Table id="backtests" 
-				items="{Backtests}" 
+				items="{/Backtest}" 
 				itemPress=".onBacktestPress" 
 				inset="false">
 				<headerToolbar>
