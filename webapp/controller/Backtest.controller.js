@@ -15,6 +15,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
     _onRouteMatched: function(oEvent) {
       var oController = this;
       var oView = this.getView();
+      var oModel = oView.getModel();
+      var oDraftModel = oView.getModel("draft");
       var sBacktestId = oEvent.getParameter("arguments").id;
 
       oView.bindElement({
@@ -25,6 +27,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
         events: {
           dataReceived: function() {
             oController._bindAssets();
+
+            var oBindingContext = oView.getBindingContext();
+
+            var sStart = oBindingContext.getProperty("start").slice(0, 10);
+            oDraftModel.setProperty("/start", sStart);
+            var sEnd = oBindingContext.getProperty("end").slice(0, 10);
+            oDraftModel.setProperty("/end", sEnd);
+
+            oController._draw();
           }
         }
       });
@@ -54,10 +65,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
       this._bindAssets();
     },
 
-    onRefresh: function() {
+    _draw: function() {
       var oView = this.getView();
       var oCandlestick = this.byId("candlestick");
-      // var oIndicator0 = this.byId("indicator0");
+      var oIndicator0 = this.byId("indicator0");
+      var oBalance = this.byId("balance");
       var oBindingContext = oView.getBindingContext();
       var sBacktestId = oBindingContext.getProperty("_id");
 
@@ -66,14 +78,44 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
         .loadData("/odata/Backtest('" + sBacktestId + "')/Output")
         .finally(function() {
           oCandlestick.refresh();
-          // oIndicator0.refresh();
+          oIndicator0.refresh();
+          oBalance.refresh();
         });
+    },
+
+    onRefresh: function() {
+      this._draw();
     },
 
     onBackPress: function() {
       this.getOwnerComponent()
         .getRouter()
         .navTo("backtests");
+    },
+
+    onStartChange: function() {
+      var oView = this.getView();
+      oView
+        .getBindingContext()
+        .setProperty(
+          "start",
+          moment
+            .utc(oView.getModel("draft").getProperty("/start"))
+            .toISOString()
+        );
+      // TODO после сохранения обновить Output
+    },
+
+    onEndChange: function() {
+      var oView = this.getView();
+      oView.getBindingContext().setProperty(
+        "end",
+        moment
+          .utc(oView.getModel("draft").getProperty("/end"))
+          .add(1, "d")
+          .add(-1, "s")
+          .toISOString()
+      );
     }
   });
 });

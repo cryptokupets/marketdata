@@ -13,8 +13,9 @@
     navButtonPress="onBackPress" 
     showHeader="true">
     <headerContent>
-			<Button icon="sap-icon://refresh" press="onRefresh"/>
-		</headerContent>
+      <Button icon="sap-icon://refresh" 
+        press="onRefresh"/>
+    </headerContent>
     <content>
       <l:ResponsiveSplitter>
         <l:PaneContainer>
@@ -67,16 +68,18 @@
                         </ComboBox>
                       </form:FormElement>
                       <form:FormElement label="Start">
-                        <DatePicker value="{start}" 
-                          valueFormat="yyyy-MM-dd" 
+                        <DatePicker id="start" 
                           displayFormat="short" 
-                          change="onStartChange" />
+                          change="onStartChange" 
+                          valueFormat="yyyy-MM-dd" 
+                          value="{draft>/start}"/>
                       </form:FormElement>
                       <form:FormElement label="End">
-                        <DatePicker value="{end}" 
-                          valueFormat="yyyy-MM-dd" 
+                        <DatePicker id="end" 
                           displayFormat="short" 
-                          change="onEndChange" />
+                          change="onEndChange" 
+                          valueFormat="yyyy-MM-dd" 
+                          value="{draft>/end}"/>
                       </form:FormElement>
                     </form:formElements>
                   </form:FormContainer>
@@ -106,8 +109,8 @@
                     close="{buffer>close}"/>
                 </chart:CandlestickChart>
               </chart:Chart>
-              <!-- <chart:Chart id="indicator0" 
-                height="100px" 
+              <chart:Chart id="indicator0" 
+                height="80px" 
                 padding="5 20 25 60" 
                 start="{start}" 
                 end="{end}" 
@@ -118,7 +121,18 @@
                   <chart:LineChartItem time="{buffer>time}" 
                     value="{buffer>values/0}"/>
                 </indicator:CCIOZ>
-              </chart:Chart> -->
+              </chart:Chart>
+              <chart:Chart id="balance" 
+                height="200px" 
+                padding="5 20 25 60" 
+                start="{start}" 
+                end="{end}" 
+                timeframe="15">
+                <chart:SteppedLineChart items="{buffer>/balance}">
+                  <chart:LineChartItem time="{buffer>time}" 
+                    value="{buffer>estimateAmount}"/>
+                </chart:SteppedLineChart>
+              </chart:Chart>
             </VBox>
           </l:SplitPane>
         </l:PaneContainer>
