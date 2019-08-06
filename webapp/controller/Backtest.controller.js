@@ -10,6 +10,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
         .getRouter()
         .getRoute("backtest")
         .attachMatched(this._onRouteMatched, this);
+      this.getView().addStyleClass(
+        this.getOwnerComponent().getContentDensityClass()
+      );
     },
 
     _onRouteMatched: function(oEvent) {
@@ -27,13 +30,24 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
         events: {
           dataReceived: function() {
             oController._bindAssets();
-
             var oBindingContext = oView.getBindingContext();
 
             var sStart = oBindingContext.getProperty("start").slice(0, 10);
             oDraftModel.setProperty("/start", sStart);
             var sEnd = oBindingContext.getProperty("end").slice(0, 10);
             oDraftModel.setProperty("/end", sEnd);
+            var sTimeframe = oBindingContext.getProperty("timeframe");
+            oView
+              .getModel("view")
+              .setProperty(
+                "/timeframe",
+                moment
+                  .duration(
+                    +sTimeframe.slice(1),
+                    sTimeframe.slice(0, 1).toLowerCase()
+                  )
+                  .asMinutes()
+              );
 
             oController._draw();
           }
@@ -116,6 +130,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
           .add(-1, "s")
           .toISOString()
       );
+    },
+
+    onTimeframeChange: function() {
+      var oView = this.getView();
+      var sTimeframe = oView.getBindingContext().getProperty("timeframe");
+      // var iTimeframeMilliseconds = moment.duration(+sTimeframe.slice(1), sTimeframe.slice(0, 1).toLowerCase()).asMilliseconds();
+      oView
+        .getModel("view")
+        .setProperty(
+          "/timeframe",
+          moment
+            .duration(
+              +sTimeframe.slice(1),
+              sTimeframe.slice(0, 1).toLowerCase()
+            )
+            .asMinutes()
+        );
     }
   });
 });

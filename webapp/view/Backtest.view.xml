@@ -23,27 +23,29 @@
             <l:SplitPane>
               <form:Form editable="true">
                 <form:layout>
-                  <form:ResponsiveGridLayout labelSpanXL="12" 
-                    labelSpanL="12" 
-                    labelSpanM="12" 
-                    labelSpanS="12" 
+                  <form:ResponsiveGridLayout labelSpanXL="2" 
+                    labelSpanL="2" 
+                    labelSpanM="3" 
+                    labelSpanS="6" 
                     adjustLabelSpan="false" 
                     emptySpanXL="0" 
                     emptySpanL="0" 
                     emptySpanM="0" 
                     emptySpanS="0" 
-                    columnsXL="1" 
-                    columnsL="1" 
-                    columnsM="1"/>
+                    columnsXL="12" 
+                    columnsL="6" 
+                    columnsM="4"/>
                 </form:layout>
                 <form:formContainers>
                   <form:FormContainer>
                     <form:formElements>
                       <form:FormElement label="Currency">
                         <ComboBox selectedKey="{currencyKey}" 
-                          maxWidth="8rem" 
                           items="{Exchange/Currencies}" 
                           change="onCurrencyChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
                           <items>
                             <core:Item text="{key}" 
                               key="{key}"/>
@@ -52,15 +54,20 @@
                       </form:FormElement>
                       <form:FormElement label="Asset">
                         <ComboBox id="asset" 
-                          maxWidth="8rem" 
                           selectedKey="{assetKey}" 
-                          change="onAssetChange"/>
+                          change="onAssetChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </ComboBox>
                       </form:FormElement>
                       <form:FormElement label="Timeframe">
                         <ComboBox selectedKey="{timeframe}" 
-                          maxWidth="8rem" 
                           items="{Exchange/Timeframes}" 
                           change="onTimeframeChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
                           <items>
                             <core:Item text="{key}" 
                               key="{key}"/>
@@ -72,14 +79,22 @@
                           displayFormat="short" 
                           change="onStartChange" 
                           valueFormat="yyyy-MM-dd" 
-                          value="{draft>/start}"/>
+                          value="{draft>/start}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </DatePicker>
                       </form:FormElement>
                       <form:FormElement label="End">
                         <DatePicker id="end" 
                           displayFormat="short" 
                           change="onEndChange" 
                           valueFormat="yyyy-MM-dd" 
-                          value="{draft>/end}"/>
+                          value="{draft>/end}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </DatePicker>
                       </form:FormElement>
                     </form:formElements>
                   </form:FormContainer>
@@ -100,7 +115,7 @@
                 padding="5 20 25 60" 
                 start="{start}" 
                 end="{end}" 
-                timeframe="15">
+                timeframe="{view>/timeframe}">
                 <chart:CandlestickChart items="{buffer>/candles}">
                   <chart:Candle time="{buffer>time}" 
                     open="{buffer>open}" 
@@ -114,7 +129,7 @@
                 padding="5 20 25 60" 
                 start="{start}" 
                 end="{end}" 
-                timeframe="15">
+                timeframe="{view>/timeframe}">
                 <indicator:CCIOZ items="{buffer>/indicators/0/output}" 
                   overboughtZone="100" 
                   oversoldZone="-100">
@@ -127,7 +142,7 @@
                 padding="5 20 25 60" 
                 start="{start}" 
                 end="{end}" 
-                timeframe="15">
+                timeframe="{view>/timeframe}">
                 <chart:SteppedLineChart items="{buffer>/balance}">
                   <chart:LineChartItem time="{buffer>time}" 
                     value="{buffer>estimateAmount}"/>

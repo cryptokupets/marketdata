@@ -38,6 +38,9 @@
       },
       "view": {
         "type": "sap.ui.model.json.JSONModel"
+      },
+      "device": {
+        "type": "sap.ui.model.json.JSONModel"
       }
     },
     "rootView": {
