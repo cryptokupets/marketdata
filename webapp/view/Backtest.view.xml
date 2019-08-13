@@ -96,6 +96,30 @@
                           </layoutData>
                         </DatePicker>
                       </form:FormElement>
+                      <form:FormElement label="Indicators">
+                        <Input value="{indicatorInputs}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Input>
+                      </form:FormElement>
+                      <form:FormElement label="Stop loss enabled">
+                        <CheckBox selected="{stoplossEnabled}"/>
+                      </form:FormElement>
+                      <form:FormElement label="Stop loss level" visible="{stoplossEnabled}">
+                        <Input value="{stopLossLevel}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Input>
+                      </form:FormElement>
+                      <form:FormElement label="Fee">
+                        <Input value="{fee}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Input>
+                      </form:FormElement>
                     </form:formElements>
                   </form:FormContainer>
                 </form:formContainers>
@@ -110,32 +134,16 @@
           <l:SplitPane>
             <VBox height="100%" 
               busy="{view>/busy}">
-              <chart:Chart id="candlestick" 
-                height="400px" 
+              <chart:Chart id="close" 
+                height="200px" 
                 padding="5 20 25 60" 
                 start="{start}" 
                 end="{end}" 
                 timeframe="{view>/timeframe}">
-                <chart:CandlestickChart items="{buffer>/candles}">
-                  <chart:Candle time="{buffer>time}" 
-                    open="{buffer>open}" 
-                    high="{buffer>high}" 
-                    low="{buffer>low}" 
-                    close="{buffer>close}"/>
-                </chart:CandlestickChart>
-              </chart:Chart>
-              <chart:Chart id="indicator0" 
-                height="80px" 
-                padding="5 20 25 60" 
-                start="{start}" 
-                end="{end}" 
-                timeframe="{view>/timeframe}">
-                <indicator:CCIOZ items="{buffer>/indicators/0/output}" 
-                  overboughtZone="100" 
-                  oversoldZone="-100">
+                <chart:SteppedLineChart items="{buffer>/candles}">
                   <chart:LineChartItem time="{buffer>time}" 
-                    value="{buffer>values/0}"/>
-                </indicator:CCIOZ>
+                    value="{buffer>close}"/>
+                </chart:SteppedLineChart>
               </chart:Chart>
               <chart:Chart id="balance" 
                 height="200px" 

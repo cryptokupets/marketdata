@@ -81,8 +81,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
 
     _draw: function() {
       var oView = this.getView();
-      var oCandlestick = this.byId("candlestick");
-      var oIndicator0 = this.byId("indicator0");
+      var oClose = this.byId("close");
       var oBalance = this.byId("balance");
       var oBindingContext = oView.getBindingContext();
       var sBacktestId = oBindingContext.getProperty("_id");
@@ -91,8 +90,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller", "sap/ui/core/Item"], function(
         .getModel("buffer")
         .loadData("/odata/Backtest('" + sBacktestId + "')/Output")
         .finally(function() {
-          oCandlestick.refresh();
-          oIndicator0.refresh();
+          oClose.refresh();
           oBalance.refresh();
         });
     },
