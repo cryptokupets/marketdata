@@ -1,59 +1,53 @@
 <mvc:View controllerName="ck.marketdata.controller.Backtests" 
 	xmlns:mvc="sap.ui.core.mvc" 
-	xmlns="sap.m">
-	<Page title="Backtests" 
-		showNavButton="true" 
-		navButtonPress=".onNavBack">
-		<content>
+	xmlns="sap.ui.table"
+	xmlns:m="sap.m">
+	<m:Page title="Backtests">
+		<m:content>
 			<Table id="backtests" 
-				items="{/Backtest}" 
-				itemPress=".onBacktestPress" 
-				inset="false">
-				<headerToolbar>
-					<Toolbar>
-						<Title text="Backtest"/>
-						<ToolbarSpacer />
-						<Button icon="sap-icon://add" 
-							press=".onAddBacktestPress"/>
-					</Toolbar>
-				</headerToolbar>
+				rows="{/Backtest}"
+				title="Backtest"
+				selectionMode="Single"
+				selectionBehavior="RowOnly"
+				visibleRowCountMode="Auto"
+				rowSelectionChange="onRowSelectionChange">
 				<columns>
 					<Column>
-						<Text text="Exchange"/>
+						<m:Label text="Currency" />
+						<template>
+							<m:Text text="{currencyKey}" wrapping="false"/>
+						</template>
 					</Column>
 					<Column>
-						<Text text="Currency"/>
+						<m:Label text="Asset" />
+						<template>
+							<m:Text text="{assetKey}" wrapping="false"/>
+						</template>
 					</Column>
 					<Column>
-						<Text text="Asset"/>
+						<m:Label text="Timeframe" />
+						<template>
+							<m:Text text="{timeframe}" wrapping="false"/>
+						</template>
 					</Column>
 					<Column>
-						<Text text="Timeframe"/>
+						<m:Label text="Profit" />
+						<template>
+							<m:Text text="{profit}" wrapping="false"/>
+						</template>
 					</Column>
-					<Column>
-						<Text text="Range"/>
-					</Column>
+					<!-- <Column width="11rem" hAlign="Center">
+						<m:Label text="Delivery Date" />
+						<template>
+							<m:DatePicker value="{
+								path: 'DeliveryDate',
+								type: 'sap.ui.model.type.Date',
+								formatOptions: {source: {pattern: 'timestamp'}}
+							}"/>
+						</template>
+					</Column> -->
 				</columns>
-				<items>
-					<ColumnListItem type="Active">
-						<cells>
-							<Text text="{exchangeKey}"/>
-						</cells>
-						<cells>
-							<Text text="{currencyKey}"/>
-						</cells>
-						<cells>
-							<Text text="{assetKey}"/>
-						</cells>
-						<cells>
-							<Text text="{timeframe}"/>
-						</cells>
-						<cells>
-							<Text text="{start} {end}"/>
-						</cells>
-					</ColumnListItem>
-				</items>
 			</Table>
-		</content>
-	</Page>
+		</m:content>
+	</m:Page>
 </mvc:View>
