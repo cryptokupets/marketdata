@@ -4,17 +4,11 @@ sap.ui.define(
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.Backtests", {
-      onInit: function() {
+      onBackPress: function() {
         this.getOwnerComponent()
           .getRouter()
-          .getRoute("backtests")
-          .attachMatched(this._onRouteMatched, this);
-        this.getView().addStyleClass(
-          this.getOwnerComponent().getContentDensityClass()
-        );
+          .navTo("main");
       },
-
-      _onRouteMatched: function(oEvent) {},
 
       onRowSelectionChange: function(oEvent) {
         this.getOwnerComponent()

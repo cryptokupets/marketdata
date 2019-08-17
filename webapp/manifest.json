@@ -59,8 +59,18 @@
       "routes": [
         {
           "pattern": "",
+          "name": "main",
+          "target": "main"
+        },
+        {
+          "pattern": "backtests",
           "name": "backtests",
           "target": "backtests"
+        },
+        {
+          "pattern": "candles",
+          "name": "candles",
+          "target": "candles"
         },
         {
           "pattern": "backtest/{id}",
@@ -69,13 +79,21 @@
         }
       ],
       "targets": {
+        "main": {
+          "viewName": "Main",
+					"viewLevel": 0
+        },
+        "candles": {
+          "viewName": "Candles",
+					"viewLevel": 1
+        },
         "backtests": {
           "viewName": "Backtests",
-					"viewLevel": 0
+					"viewLevel": 1
         },
         "backtest": {
           "viewName": "Backtest",
-					"viewLevel": 1
+					"viewLevel": 2
         }
       }
     }

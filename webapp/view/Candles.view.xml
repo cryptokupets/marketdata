@@ -4,108 +4,148 @@
   xmlns:l="sap.ui.layout" 
   xmlns:form="sap.ui.layout.form" 
   xmlns="sap.m" 
-  xmlns:chart="openui5.fc" 
-  xmlns:indicator="openui5.fc.indicator" 
+  xmlns:chart="openui5.financial.chart" 
+  xmlns:indicator="openui5.financial.chart.indicator" 
   displayBlock="true">
   <Page enableScrolling="false" 
     showNavButton="true" 
     navButtonPress="onBackPress" 
     showHeader="true">
+    <headerContent>
+      <Button icon="sap-icon://refresh" 
+        text="Refresh" 
+        press="onRefreshPress"/>
+    </headerContent>
     <content>
       <l:ResponsiveSplitter>
         <l:PaneContainer>
-          <l:SplitPane>
-            <form:Form editable="true">
-              <form:layout>
-                <form:ResponsiveGridLayout labelSpanXL="12" 
-                  labelSpanL="12" 
-                  labelSpanM="12" 
-                  labelSpanS="12" 
-                  adjustLabelSpan="false" 
-                  emptySpanXL="0" 
-                  emptySpanL="0" 
-                  emptySpanM="0" 
-                  emptySpanS="0" 
-                  columnsXL="1" 
-                  columnsL="1" 
-                  columnsM="1"/>
-              </form:layout>
-              <form:formContainers>
-                <form:FormContainer>
-                  <form:formElements>
-                    <form:FormElement label="Currency">
-                      <ComboBox selectedKey="{view>/currency}" 
-                        maxWidth="8rem" 
-                        items="{Currencies}" 
-                        change="onCurrencyChange">
-                        <items>
-                          <core:Item text="{key}" 
-                            key="{key}"/>
-                        </items>
-                      </ComboBox>
-                    </form:FormElement>
-                    <form:FormElement label="Asset">
-                      <ComboBox id="asset" 
-                        maxWidth="8rem" 
-                        selectedKey="{view>/asset}" 
-                        change="onAssetChange"/>
-                    </form:FormElement>
-                    <form:FormElement label="Timeframe">
-                      <ComboBox selectedKey="{view>/timeframe}" 
-                        maxWidth="8rem" 
-                        items="{Timeframes}" 
-                        change="onTimeframeChange">
-                        <items>
-                          <core:Item text="{key}" 
-                            key="{key}"/>
-                        </items>
-                      </ComboBox>
-                    </form:FormElement>
-                    <form:FormElement label="Range">
-                      <DateRangeSelection dateValue="{view>/start}" 
-                        secondDateValue="{view>/end}" 
-                        change="onDateRangeChange" />
-                    </form:FormElement>
-                    <form:FormElement label="Strategy">
-                      <codeeditor:CodeEditor editable="true" value="{view>/strategyCode}"/>
-                    </form:FormElement>
-                  </form:formElements>
-                </form:FormContainer>
-              </form:formContainers>
-            </form:Form>
-          </l:SplitPane>
-          <l:SplitPane>
-            <VBox height="100%" 
-              busy="{view>/busy}">
-              <chart:Chart id="candlestick"
-                height="500px" 
-                padding="5 20 25 60" 
-                start="{view>/start}" 
-                end="{view>/end}" 
-                timeframe="15">
-                <chart:CandlestickChart items="{buffer>/candles}">
-                  <chart:Candle time="{buffer>time}" 
-                    open="{buffer>open}" 
-                    high="{buffer>high}" 
-                    low="{buffer>low}" 
-                    close="{buffer>close}"/>
-                </chart:CandlestickChart>
-              </chart:Chart>
-              <chart:Chart id="indicator0"
-                height="200px" 
-                padding="5 20 25 60" 
-                start="{view>/start}" 
-                end="{view>/end}" 
-                timeframe="15">
-                <indicator:CCIOZ items="{buffer>/indicatorOutputs/0/output}" 
-                  overboughtZone="100" 
-                  oversoldZone="-100">
-                  <chart:LineChartItem time="{buffer>time}" 
-                    value="{buffer>values/0}"/>
-                </indicator:CCIOZ>
-              </chart:Chart>
-            </VBox>
-          </l:SplitPane>
+          <l:PaneContainer orientation="Vertical">
+            <l:SplitPane>
+              <form:Form editable="true">
+                <form:layout>
+                  <form:ResponsiveGridLayout labelSpanXL="2" 
+                    labelSpanL="2" 
+                    labelSpanM="3" 
+                    labelSpanS="6" 
+                    adjustLabelSpan="false" 
+                    emptySpanXL="0" 
+                    emptySpanL="0" 
+                    emptySpanM="0" 
+                    emptySpanS="0" 
+                    columnsXL="12" 
+                    columnsL="6" 
+                    columnsM="4"/>
+                </form:layout>
+                <form:formContainers>
+                  <form:FormContainer>
+                    <form:formElements>
+                      <form:FormElement label="Exchange">
+                        <Text text="{key}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Text>
+                      </form:FormElement>
+                      <form:FormElement label="Currency">
+                        <ComboBox selectedKey="{buffer>/currencyKey}" 
+                          items="{Currencies}" 
+                          change="onCurrencyChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                          <items>
+                            <core:Item text="{key}" 
+                              key="{key}"/>
+                          </items>
+                        </ComboBox>
+                      </form:FormElement>
+                      <form:FormElement label="Asset">
+                        <ComboBox id="asset" 
+                          selectedKey="{buffer>/assetKey}" 
+                          change="onAssetChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </ComboBox>
+                      </form:FormElement>
+                      <form:FormElement label="Timeframe">
+                        <ComboBox selectedKey="{buffer>/timeframe}" 
+                          items="{Timeframes}" 
+                          change="onTimeframeChange">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                          <items>
+                            <core:Item text="{key}" 
+                              key="{key}"/>
+                          </items>
+                        </ComboBox>
+                      </form:FormElement>
+                      <form:FormElement label="Start">
+                        <DatePicker id="start" 
+                          displayFormat="short" 
+                          valueFormat="yyyy-MM-dd" 
+                          value="{buffer>/start}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </DatePicker>
+                      </form:FormElement>
+                      <form:FormElement label="End">
+                        <DatePicker id="end" 
+                          displayFormat="short" 
+                          valueFormat="yyyy-MM-dd" 
+                          value="{buffer>/end}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </DatePicker>
+                      </form:FormElement>
+                      <form:FormElement label="Indicators">
+                        <Input value="{buffer>/indicatorInputs}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Input>
+                      </form:FormElement>
+                    </form:formElements>
+                  </form:FormContainer>
+                </form:formContainers>
+              </form:Form>
+            </l:SplitPane>
+            <l:SplitPane>
+              <VBox height="100%" 
+                busy="{view>/busy}">
+                <chart:Chart id="candlestick" 
+                  height="500px" 
+                  padding="5 20 25 60" 
+                  start="{view>/start}" 
+                  end="{view>/end}" 
+                  timeframe="15">
+                  <chart:CandlestickChart items="{buffer>/candles}">
+                    <chart:Candle time="{buffer>time}" 
+                      open="{buffer>open}" 
+                      high="{buffer>high}" 
+                      low="{buffer>low}" 
+                      close="{buffer>close}"/>
+                  </chart:CandlestickChart>
+                </chart:Chart>
+                <chart:Chart id="indicator0" 
+                  height="200px" 
+                  padding="5 20 25 60" 
+                  start="{view>/start}" 
+                  end="{view>/end}" 
+                  timeframe="15">
+                  <indicator:CCIOZ items="{buffer>/indicatorOutputs/0/output}" 
+                    overboughtZone="100" 
+                    oversoldZone="-100">
+                    <chart:LineChartItem time="{buffer>time}" 
+                      value="{buffer>values/0}"/>
+                  </indicator:CCIOZ>
+                </chart:Chart>
+              </VBox>
+            </l:SplitPane>
+          </l:PaneContainer>
         </l:PaneContainer>
       </l:ResponsiveSplitter>
     </content>
