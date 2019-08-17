@@ -13,8 +13,9 @@
     navButtonPress="onBackPress" 
     showHeader="true">
     <headerContent>
-      <Button icon="sap-icon://refresh" 
-        press="onRefresh"/>
+      <Button icon="sap-icon://media-play" 
+        text="Run"
+        press="onRunPress"/>
     </headerContent>
     <content>
       <l:ResponsiveSplitter>
@@ -39,8 +40,15 @@
                 <form:formContainers>
                   <form:FormContainer>
                     <form:formElements>
+                      <form:FormElement label="Exchange">
+                        <Text text="{exchangeKey}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Text>
+                      </form:FormElement>
                       <form:FormElement label="Currency">
-                        <ComboBox selectedKey="{currencyKey}" 
+                        <ComboBox selectedKey="{draft>/currencyKey}" 
                           items="{Exchange/Currencies}" 
                           change="onCurrencyChange">
                           <layoutData>
@@ -54,7 +62,7 @@
                       </form:FormElement>
                       <form:FormElement label="Asset">
                         <ComboBox id="asset" 
-                          selectedKey="{assetKey}" 
+                          selectedKey="{draft>/assetKey}" 
                           change="onAssetChange">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
@@ -62,7 +70,7 @@
                         </ComboBox>
                       </form:FormElement>
                       <form:FormElement label="Timeframe">
-                        <ComboBox selectedKey="{timeframe}" 
+                        <ComboBox selectedKey="{draft>/timeframe}" 
                           items="{Exchange/Timeframes}" 
                           change="onTimeframeChange">
                           <layoutData>
@@ -77,7 +85,6 @@
                       <form:FormElement label="Start">
                         <DatePicker id="start" 
                           displayFormat="short" 
-                          change="onStartChange" 
                           valueFormat="yyyy-MM-dd" 
                           value="{draft>/start}">
                           <layoutData>
@@ -88,7 +95,6 @@
                       <form:FormElement label="End">
                         <DatePicker id="end" 
                           displayFormat="short" 
-                          change="onEndChange" 
                           valueFormat="yyyy-MM-dd" 
                           value="{draft>/end}">
                           <layoutData>
@@ -97,28 +103,56 @@
                         </DatePicker>
                       </form:FormElement>
                       <form:FormElement label="Indicators">
-                        <Input value="{indicatorInputs}">
+                        <Input value="{draft>/strategyIndicators}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Input>
+                      </form:FormElement>
+                      <form:FormElement label="Parameters">
+                        <Input value="{draft>/strategyParameters}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
                         </Input>
                       </form:FormElement>
                       <form:FormElement label="Stop loss enabled">
-                        <CheckBox selected="{stoplossEnabled}"/>
+                        <CheckBox selected="{draft>/stoplossEnabled}"/>
                       </form:FormElement>
-                      <form:FormElement label="Stop loss level" visible="{stoplossEnabled}">
-                        <Input value="{stopLossLevel}">
+                      <form:FormElement label="Stop loss level" visible="{draft>/stoplossEnabled}">
+                        <Input value="{draft>/stopLossLevel}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
                         </Input>
                       </form:FormElement>
                       <form:FormElement label="Fee">
-                        <Input value="{fee}">
+                        <Input value="{draft>/fee}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
                         </Input>
+                      </form:FormElement>
+                      <form:FormElement label="Initial Balance">
+                        <Text text="{initialBalance}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Text>
+                      </form:FormElement>
+                      <form:FormElement label="Final Balance">
+                        <Text text="{finalBalance}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Text>
+                      </form:FormElement>
+                      <form:FormElement label="Profit">
+                        <Text text="{profit}">
+                          <layoutData>
+                            <l:GridData span="XL2 L2 M3 S6"/>
+                          </layoutData>
+                        </Text>
                       </form:FormElement>
                     </form:formElements>
                   </form:FormContainer>
@@ -127,37 +161,10 @@
             </l:SplitPane>
             <l:SplitPane>
               <codeeditor:CodeEditor editable="true" 
-                value="{strategyCode}" 
+                value="{draft>/strategyCode}" 
                 height="100%"/>
             </l:SplitPane>
           </l:PaneContainer>
-          <l:SplitPane>
-            <VBox height="100%" 
-              busy="{view>/busy}">
-              <chart:Chart id="close" 
-                height="200px" 
-                padding="5 20 25 60" 
-                start="{start}" 
-                end="{end}" 
-                timeframe="{view>/timeframe}">
-                <chart:SteppedLineChart items="{buffer>/candles}">
-                  <chart:LineChartItem time="{buffer>time}" 
-                    value="{buffer>close}"/>
-                </chart:SteppedLineChart>
-              </chart:Chart>
-              <chart:Chart id="balance" 
-                height="200px" 
-                padding="5 20 25 60" 
-                start="{start}" 
-                end="{end}" 
-                timeframe="{view>/timeframe}">
-                <chart:SteppedLineChart items="{buffer>/balance}">
-                  <chart:LineChartItem time="{buffer>time}" 
-                    value="{buffer>estimateAmount}"/>
-                </chart:SteppedLineChart>
-              </chart:Chart>
-            </VBox>
-          </l:SplitPane>
         </l:PaneContainer>
       </l:ResponsiveSplitter>
     </content>

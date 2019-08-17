@@ -9,17 +9,18 @@ sap.ui.define(
           .getRouter()
           .getRoute("backtests")
           .attachMatched(this._onRouteMatched, this);
+        this.getView().addStyleClass(
+          this.getOwnerComponent().getContentDensityClass()
+        );
       },
 
-      _onRouteMatched: function(oEvent) {
-      },
+      _onRouteMatched: function(oEvent) {},
 
-      onBacktestPress: function(oEvent) {
-        var sBacktestId = oEvent.getParameters().listItem.getBindingContext().getProperty("_id");
+      onRowSelectionChange: function(oEvent) {
         this.getOwnerComponent()
           .getRouter()
           .navTo("backtest", {
-            id: sBacktestId
+            id: oEvent.getParameter("rowContext").getProperty("_id")
           });
       }
     });
