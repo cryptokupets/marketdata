@@ -9,7 +9,7 @@
   "dependencies": {
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
-    "marketdata-api": "^1.0.6"
+    "marketdata-api": "^1.0.8"
   },
   "author": "Dmitry Fokin <fokinsoft@gmail.com> (http://github.com/fokind)",
   "license": "MIT"
