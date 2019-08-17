@@ -130,7 +130,6 @@ sap.ui.define(
 
       _bufferToJSON: function() {
         var oBufferModel = this.getView().getModel("buffer");
-        console.log(oBufferModel);
         return JSON.stringify({
           asset: oBufferModel.getProperty("/assetKey"),
           currency: oBufferModel.getProperty("/currencyKey"),
@@ -146,6 +145,9 @@ sap.ui.define(
       },
 
       onRefreshPress: function() {
+        var oCandlestick = this.byId("candlestick");
+        var oIndicator0 = this.byId("indicator0");
+        var oChartsModel = this.getView().getModel("charts");
         $.ajax({
           async: true,
           url: "/odata/Exchange('hitbtc')/odata.getMarketData()",
@@ -155,7 +157,10 @@ sap.ui.define(
           },
           data: this._bufferToJSON()
         }).then(function(oData) {
-          console.log(oData);
+          // перерисовать диаграммы
+          oChartsModel.setData(oData);
+          oCandlestick.refresh();
+          oIndicator0.refresh();
         });
       },
 

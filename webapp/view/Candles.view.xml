@@ -114,33 +114,32 @@
               </form:Form>
             </l:SplitPane>
             <l:SplitPane>
-              <VBox height="100%" 
-                busy="{view>/busy}">
+              <VBox height="100%">
                 <chart:Chart id="candlestick" 
                   height="500px" 
                   padding="5 20 25 60" 
-                  start="{view>/start}" 
-                  end="{view>/end}" 
-                  timeframe="15">
-                  <chart:CandlestickChart items="{buffer>/candles}">
-                    <chart:Candle time="{buffer>time}" 
-                      open="{buffer>open}" 
-                      high="{buffer>high}" 
-                      low="{buffer>low}" 
-                      close="{buffer>close}"/>
+                  start="{buffer>/start}" 
+                  end="{buffer>/end}" 
+                  timeframe="60">
+                  <chart:CandlestickChart items="{charts>/value/0/candles}">
+                    <chart:Candle time="{charts>time}" 
+                      open="{charts>open}" 
+                      high="{charts>high}" 
+                      low="{charts>low}" 
+                      close="{charts>close}"/>
                   </chart:CandlestickChart>
                 </chart:Chart>
                 <chart:Chart id="indicator0" 
                   height="200px" 
                   padding="5 20 25 60" 
-                  start="{view>/start}" 
-                  end="{view>/end}" 
-                  timeframe="15">
-                  <indicator:CCIOZ items="{buffer>/indicatorOutputs/0/output}" 
+                  start="{buffer>/start}" 
+                  end="{buffer>/end}" 
+                  timeframe="60">
+                  <indicator:CCIOZ items="{charts>/value/0/indicators/0/output}" 
                     overboughtZone="100" 
                     oversoldZone="-100">
-                    <chart:LineChartItem time="{buffer>time}" 
-                      value="{buffer>values/0}"/>
+                    <chart:LineChartItem time="{charts>time}" 
+                      value="{charts>values/0}"/>
                   </indicator:CCIOZ>
                 </chart:Chart>
               </VBox>
