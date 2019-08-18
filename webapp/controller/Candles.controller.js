@@ -147,6 +147,7 @@ sap.ui.define(
       onRefreshPress: function() {
         var oCandlestick = this.byId("candlestick");
         var oIndicator0 = this.byId("indicator0");
+        var oIndicator1 = this.byId("indicator1");
         var oChartsModel = this.getView().getModel("charts");
         $.ajax({
           async: true,
@@ -161,6 +162,7 @@ sap.ui.define(
           oChartsModel.setData(oData);
           oCandlestick.refresh();
           oIndicator0.refresh();
+          oIndicator1.refresh();
         });
       },
 

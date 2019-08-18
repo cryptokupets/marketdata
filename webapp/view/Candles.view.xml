@@ -116,7 +116,7 @@
             <l:SplitPane>
               <VBox height="100%">
                 <chart:Chart id="candlestick" 
-                  height="500px" 
+                  height="300px" 
                   padding="5 20 25 60" 
                   start="{buffer>/start}" 
                   end="{buffer>/end}" 
@@ -130,7 +130,7 @@
                   </chart:CandlestickChart>
                 </chart:Chart>
                 <chart:Chart id="indicator0" 
-                  height="200px" 
+                  height="90px" 
                   padding="5 20 25 60" 
                   start="{buffer>/start}" 
                   end="{buffer>/end}" 
@@ -141,6 +141,19 @@
                     <chart:LineChartItem time="{charts>time}" 
                       value="{charts>values/0}"/>
                   </indicator:CCIOZ>
+                </chart:Chart>
+                <chart:Chart id="indicator1" 
+                  height="90px" 
+                  padding="5 20 25 60" 
+                  start="{buffer>/start}" 
+                  end="{buffer>/end}" 
+                  timeframe="60">
+                  <indicator:MACD items="{charts>/value/0/indicators/1/output}">
+                    <indicator:MACDItem time="{charts>time}" 
+                      macd="{charts>values/0}" 
+                      trigger="{charts>values/1}" 
+                      histogram="{charts>values/2}"/>
+                  </indicator:MACD>
                 </chart:Chart>
               </VBox>
             </l:SplitPane>
