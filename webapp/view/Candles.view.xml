@@ -121,7 +121,7 @@
                   start="{buffer>/start}" 
                   end="{buffer>/end}" 
                   timeframe="60">
-                  <chart:CandlestickChart items="{charts>/value/0/candles}">
+                  <chart:CandlestickChart items="{charts>/candles}">
                     <chart:Candle time="{charts>time}" 
                       open="{charts>open}" 
                       high="{charts>high}" 
@@ -135,7 +135,7 @@
                   start="{buffer>/start}" 
                   end="{buffer>/end}" 
                   timeframe="60">
-                  <indicator:CCIOZ items="{charts>/value/0/indicators/0/output}" 
+                  <indicator:CCIOZ items="{charts>/indicators/0/output}" 
                     overboughtZone="100" 
                     oversoldZone="-100">
                     <chart:LineChartItem time="{charts>time}" 
@@ -148,7 +148,7 @@
                   start="{buffer>/start}" 
                   end="{buffer>/end}" 
                   timeframe="60">
-                  <indicator:MACD items="{charts>/value/0/indicators/1/output}">
+                  <indicator:MACD items="{charts>/indicators/1/output}">
                     <indicator:MACDItem time="{charts>time}" 
                       macd="{charts>values/0}" 
                       trigger="{charts>values/1}" 

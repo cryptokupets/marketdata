@@ -25,6 +25,11 @@ sap.ui.define(
         var oView = this.getView();
         var oBufferModel = oView.getModel("buffer");
         oBufferModel.setProperty("/currencyKey", "BTC");
+        oBufferModel.setProperty("/assetKey", "XMR");
+        oBufferModel.setProperty("/start", "2019-08-01");
+        oBufferModel.setProperty("/end", "2019-08-07");
+        oBufferModel.setProperty("/timeframe", "H1");
+        oBufferModel.setProperty("/indicatorInputs", '[{"name":"cci","options":[14]},{"name":"macd","options":[12,26,9]}]');
         oView.bindElement({
           path: "/Exchange('hitbtc')",
           parameters: {
@@ -36,71 +41,7 @@ sap.ui.define(
             }
           }
         });
-
-        // var oCandlestick = this.byId("candlestick");
-        // var oIndicator0 = this.byId("indicator0");
-
-        // oView
-        //   .getModel("buffer")
-        //   .loadData(
-        //     "/odata/Buffer(exchangeKey='" +
-        //       sExchange +
-        //       "',currencyKey='" +
-        //       sCurrency +
-        //       "',timeframe='" +
-        //       sTimeframe +
-        //       "',assetKey='" +
-        //       sAsset +
-        //       "',start='" +
-        //       sStart +
-        //       "',end='" +
-        //       sEnd +
-        //       "',indicatorInputs='cci 14')"
-        //   )
-        //   .finally(function() {
-        //     oCandlestick.refresh();
-        //     oIndicator0.refresh();
-        //     oViewModel.setProperty("/busy", false);
-        //   });
       },
-
-      // onCurrencyChange: function() {
-      //   this._changeRouteArguments();
-      // },
-
-      // onAssetChange: function() {
-      //   this._changeRouteArguments();
-      // },
-
-      // onTimeframeChange: function() {
-      //   this._changeRouteArguments();
-      // },
-
-      // onDateRangeChange: function() {
-      //   this._changeRouteArguments();
-      // },
-
-      // _changeRouteArguments: function() {
-      //   var oViewModel = this.getView().getModel("view");
-      //   UIComponent.getRouterFor(this).navTo(
-      //     "candles",
-      //     {
-      //       query: {
-      //         exchange: oViewModel.getProperty("/exchange"),
-      //         currency: oViewModel.getProperty("/currency"),
-      //         asset: oViewModel.getProperty("/asset"),
-      //         timeframe: oViewModel.getProperty("/timeframe"),
-      //         start: moment(oViewModel.getProperty("/start"))
-      //           .format()
-      //           .slice(0, 19),
-      //         end: moment(oViewModel.getProperty("/end"))
-      //           .format()
-      //           .slice(0, 19)
-      //       }
-      //     },
-      //     true
-      //   );
-      // },
 
       _bindAssets: function() {
         var oView = this.getView();
