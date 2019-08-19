@@ -36,6 +36,9 @@
       "charts": {
         "type": "sap.ui.model.json.JSONModel"
       },
+      "charts1": {
+        "type": "sap.ui.model.json.JSONModel"
+      },
       "draft": {
         "type": "sap.ui.model.json.JSONModel"
       },

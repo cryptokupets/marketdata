@@ -129,32 +129,30 @@
                       close="{charts>close}"/>
                   </chart:CandlestickChart>
                 </chart:Chart>
-                <chart:Chart id="indicator0" 
-                  height="90px" 
-                  padding="5 20 25 60" 
-                  start="{buffer>/start}" 
-                  end="{buffer>/end}" 
-                  timeframe="60">
-                  <indicator:CCIOZ items="{charts>/indicators/0/output}" 
-                    overboughtZone="100" 
-                    oversoldZone="-100">
-                    <chart:LineChartItem time="{charts>time}" 
-                      value="{charts>values/0}"/>
+                <!-- <chart:Chart id="indicator0" height="90px" padding="5 20 25 60" start="{buffer>/start}" end="{buffer>/end}" timeframe="60">
+                  <indicator:CCIOZ items="{charts>/indicators/0/output}" overboughtZone="100" oversoldZone="-100">
+                    <chart:LineChartItem time="{charts>time}" value="{charts>values/0}"/>
                   </indicator:CCIOZ>
-                </chart:Chart>
-                <chart:Chart id="indicator1" 
-                  height="90px" 
-                  padding="5 20 25 60" 
-                  start="{buffer>/start}" 
-                  end="{buffer>/end}" 
-                  timeframe="60">
+                </chart:Chart> -->
+                <!-- <chart:Chart id="indicator1" height="90px" padding="5 20 25 60" start="{buffer>/start}" end="{buffer>/end}" timeframe="60">
                   <indicator:MACD items="{charts>/indicators/1/output}">
-                    <indicator:MACDItem time="{charts>time}" 
-                      macd="{charts>values/0}" 
-                      trigger="{charts>values/1}" 
-                      histogram="{charts>values/2}"/>
+                    <indicator:MACDItem time="{charts>time}" macd="{charts>values/0}" trigger="{charts>values/1}" histogram="{charts>values/2}"/>
                   </indicator:MACD>
-                </chart:Chart>
+                </chart:Chart> -->
+                <VBox id="indicators" 
+                  items="{
+                    model: 'charts1',
+                    path: '/indicators',
+                    factory: '.factory',
+                    templateShareable: false
+                  }">
+                  <dependents>
+                    <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" 
+                      type="XML"/>
+                    <core:Fragment fragmentName="ck.marketdata.fragment.MACD" 
+                      type="XML"/>
+                  </dependents>
+                </VBox>
               </VBox>
             </l:SplitPane>
           </l:PaneContainer>

@@ -5,9 +5,10 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/core/Item",
+    "sap/ui/core/Fragment",
     "ck/marketdata/thirdparty/moment-with-locales"
   ],
-  function(Controller, UIComponent, Item) {
+  function(Controller, UIComponent, Item, Fragment) {
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.Candles", {
@@ -29,7 +30,10 @@ sap.ui.define(
         oBufferModel.setProperty("/start", "2019-08-01");
         oBufferModel.setProperty("/end", "2019-08-07");
         oBufferModel.setProperty("/timeframe", "H1");
-        oBufferModel.setProperty("/indicatorInputs", '[{"name":"cci","options":[14]},{"name":"macd","options":[12,26,9]}]');
+        oBufferModel.setProperty(
+          "/indicatorInputs",
+          '[{"name":"cci","options":[14]},{"name":"macd","options":[12,26,9]}]'
+        );
         oView.bindElement({
           path: "/Exchange('hitbtc')",
           parameters: {
@@ -41,6 +45,15 @@ sap.ui.define(
             }
           }
         });
+
+        this.getOwnerComponent().getModel("charts1").setProperty("/indicators", [
+          {
+            name: "MACD"
+          },
+          {
+            name: "CCIOZ"
+          }
+        ]);
       },
 
       _bindAssets: function() {
@@ -87,9 +100,10 @@ sap.ui.define(
 
       onRefreshPress: function() {
         var oCandlestick = this.byId("candlestick");
-        var oIndicator0 = this.byId("indicator0");
-        var oIndicator1 = this.byId("indicator1");
+        // var oIndicator0 = this.byId("indicator0");
+        var oIndicators = this.byId("indicators");
         var oChartsModel = this.getView().getModel("charts");
+        var oChartsModel1 = this.getView().getModel("charts1");
         $.ajax({
           async: true,
           url: "/odata/Exchange('hitbtc')/odata.getMarketData()",
@@ -102,9 +116,32 @@ sap.ui.define(
           // перерисовать диаграммы
           oChartsModel.setData(oData);
           oCandlestick.refresh();
-          oIndicator0.refresh();
-          oIndicator1.refresh();
+          // oIndicator0.refresh();
+          // oIndicator1.refresh();
+          var iNext = oChartsModel1.getProperty("/indicators").length;
+          console.log(iNext);
+          console.log(oIndicators);
+          for (let i = 0; i < iNext; i++) {
+            oIndicators.getItems()[i].refresh();
+          }
         });
+      },
+
+      factory: function(sId, oContext) {
+        console.log(oContext.getProperty("name").toLowerCase());
+        return this.byId(oContext.getProperty("name").toLowerCase()).clone(sId);
+      },
+
+      _addIndicator: function(sName) {
+        var oChartsModel = this.getView().getModel("charts");
+        var iNext = oChartsModel.getProperty("/indicators").length;
+        oChartsModel.setProperty("/indicators/" + iNext, {
+          name: sName
+        });
+        var oIndicators = this.byId("indicators");
+        for (let i = 0; i <= iNext; i++) {
+          oIndicators.getItems()[i].refresh();
+        }
       },
 
       onBackPress: function() {

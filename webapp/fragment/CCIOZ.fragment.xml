@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core" 
+  xmlns:chart="openui5.financial.chart" 
+  xmlns:indicator="openui5.financial.chart.indicator" 
+  xmlns="sap.m">
+  <chart:Chart id="ccioz"
+    height="90px" 
+    padding="5 20 25 60" 
+    start="{buffer>/start}" 
+    end="{buffer>/end}" 
+    timeframe="60">
+    <indicator:CCIOZ items="{charts>/indicators/0/output}" 
+      overboughtZone="100" 
+      oversoldZone="-100">
+      <chart:LineChartItem time="{charts>time}" 
+        value="{charts>values/0}"/>
+    </indicator:CCIOZ>
+  </chart:Chart>
+</core:FragmentDefinition>
