@@ -4,11 +4,10 @@ sap.ui.define(
   [
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
-    "sap/ui/core/Item",
-    "sap/ui/core/Fragment",
+    "sap/ui/model/json/JSONModel",
     "ck/marketdata/thirdparty/moment-with-locales"
   ],
-  function(Controller, UIComponent, Item, Fragment) {
+  function(Controller, UIComponent, JSONModel) {
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.Candles", {
@@ -16,67 +15,53 @@ sap.ui.define(
         UIComponent.getRouterFor(this)
           .getRoute("candles")
           .attachMatched(this._onRouteMatched, this);
-        this.getView().addStyleClass(
-          this.getOwnerComponent().getContentDensityClass()
-        );
+
+        var oView = this.getView();
+        oView.addStyleClass(this.getOwnerComponent().getContentDensityClass());
+
+        oView.setModel(new JSONModel(), "draft");
       },
 
-      _onRouteMatched: function(oEvent) {
-        var oController = this;
+      _onRouteMatched: function() {
+        this._bind();
+      },
+
+      _bind: function() {
         var oView = this.getView();
-        var oBufferModel = oView.getModel("buffer");
-        oBufferModel.setProperty("/currencyKey", "BTC");
-        oBufferModel.setProperty("/assetKey", "XMR");
-        oBufferModel.setProperty("/start", "2019-08-01");
-        oBufferModel.setProperty("/end", "2019-08-07");
-        oBufferModel.setProperty("/timeframe", "H1");
-        oBufferModel.setProperty(
-          "/indicatorInputs",
-          '[{"name":"cci","options":[14]},{"name":"macd","options":[12,26,9]}]'
-        );
+        var oDraftModel = oView.getModel("draft");
+
         oView.bindElement({
-          path: "/Exchange('hitbtc')",
+          path: "/View('')",
           parameters: {
-            $expand: "Currencies,Timeframes"
+            $expand: "Indicators($expand=Series),Timeframes,Assets,Currencies"
           },
           events: {
             dataReceived: function() {
-              oController._bindAssets();
+              var oBindingContext = oView.getBindingContext();
+              oDraftModel.setData({
+                currency: oBindingContext.getProperty("currency"),
+                asset: oBindingContext.getProperty("asset"),
+                timeframe: oBindingContext.getProperty("timeframe"),
+                start: oBindingContext.getProperty("start").slice(0, 10),
+                end: oBindingContext.getProperty("end").slice(0, 10),
+                Indicators: oBindingContext
+                  .getObject("Indicators")
+                  .map(value => ({
+                    Series: [
+                      {
+                        type: value.Series[0].type,
+                        indicatorName: value.Series[0].indicatorName,
+                        indicatorOptions: value.Series[0].indicatorOptions
+                      }
+                    ]
+                  }))
+              });
             }
           }
         });
-
-        this.getOwnerComponent().getModel("charts1").setProperty("/indicators", [
-          {
-            name: "MACD"
-          },
-          {
-            name: "CCIOZ"
-          }
-        ]);
       },
 
-      _bindAssets: function() {
-        var oView = this.getView();
-        var oBindingContext = oView.getBindingContext();
-        var sExchangeKey = oBindingContext.getProperty("key");
-        var sCurrencyKey = oView.getModel("buffer").getProperty("/currencyKey");
-
-        this.byId("asset").bindAggregation("items", {
-          path:
-            "/Currency(key='" +
-            sCurrencyKey +
-            "',exchangeKey='" +
-            sExchangeKey +
-            "')/Assets",
-          length: 10000,
-          template: new Item({
-            text: "{key}",
-            key: "{key}"
-          }),
-          templateShareable: false
-        });
-      },
+      _bindAssets: function() {},
 
       onCurrencyChange: function() {
         this._bindAssets();
@@ -128,8 +113,10 @@ sap.ui.define(
       },
 
       factory: function(sId, oContext) {
-        console.log(oContext.getProperty("name").toLowerCase());
-        return this.byId(oContext.getProperty("name").toLowerCase()).clone(sId);
+        var sName = oContext.getProperty("name");
+        return !!sName
+          ? this.byId(oContext.getProperty("name").toLowerCase()).clone(sId)
+          : null;
       },
 
       _addIndicator: function(sName) {

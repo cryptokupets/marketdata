@@ -40,14 +40,14 @@
                   <form:FormContainer>
                     <form:formElements>
                       <form:FormElement label="Exchange">
-                        <Text text="{key}">
+                        <Text text="{exchange}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
                         </Text>
                       </form:FormElement>
                       <form:FormElement label="Currency">
-                        <ComboBox selectedKey="{buffer>/currencyKey}" 
+                        <ComboBox selectedKey="{draft>/currency}" 
                           items="{Currencies}" 
                           change="onCurrencyChange">
                           <layoutData>
@@ -61,15 +61,20 @@
                       </form:FormElement>
                       <form:FormElement label="Asset">
                         <ComboBox id="asset" 
-                          selectedKey="{buffer>/assetKey}" 
+                          selectedKey="{draft>/asset}" 
+                          items="{Assets}" 
                           change="onAssetChange">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
+                          <items>
+                            <core:Item text="{key}" 
+                              key="{key}"/>
+                          </items>
                         </ComboBox>
                       </form:FormElement>
                       <form:FormElement label="Timeframe">
-                        <ComboBox selectedKey="{buffer>/timeframe}" 
+                        <ComboBox selectedKey="{draft>/timeframe}" 
                           items="{Timeframes}" 
                           change="onTimeframeChange">
                           <layoutData>
@@ -85,7 +90,7 @@
                         <DatePicker id="start" 
                           displayFormat="short" 
                           valueFormat="yyyy-MM-dd" 
-                          value="{buffer>/start}">
+                          value="{draft>/start}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
@@ -95,24 +100,45 @@
                         <DatePicker id="end" 
                           displayFormat="short" 
                           valueFormat="yyyy-MM-dd" 
-                          value="{buffer>/end}">
+                          value="{draft>/end}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
                         </DatePicker>
-                      </form:FormElement>
-                      <form:FormElement label="Indicators">
-                        <Input value="{buffer>/indicatorInputs}">
-                          <layoutData>
-                            <l:GridData span="XL2 L2 M3 S6"/>
-                          </layoutData>
-                        </Input>
                       </form:FormElement>
                     </form:formElements>
                   </form:FormContainer>
                 </form:formContainers>
               </form:Form>
             </l:SplitPane>
+            <l:SplitPane>
+              <Table id="indicatorsView" 
+                inset="false" 
+                items="{draft>/Indicators}">
+                <columns>
+                  <Column>
+                    <Text text="Type"/>
+                  </Column>
+                  <Column>
+                    <Text text="Indicator" />
+                  </Column>
+                  <Column>
+                    <Text text="Options" />
+                  </Column>
+                </columns>
+                <items>
+                  <ColumnListItem>
+                    <cells>
+                      <ObjectIdentifier title="{draft>Series/0/type}" />
+                      <Text text="{draft>Series/0/indicatorName}" />
+                      <Text text="{draft>Series/0/indicatorOptions}" />
+                    </cells>
+                  </ColumnListItem>
+                </items>
+              </Table>
+            </l:SplitPane>
+          </l:PaneContainer>
+          <l:PaneContainer>
             <l:SplitPane>
               <VBox height="100%">
                 <chart:Chart id="candlestick" 
@@ -139,20 +165,16 @@
                     <indicator:MACDItem time="{charts>time}" macd="{charts>values/0}" trigger="{charts>values/1}" histogram="{charts>values/2}"/>
                   </indicator:MACD>
                 </chart:Chart> -->
-                <VBox id="indicators" 
-                  items="{
-                    model: 'charts1',
-                    path: '/indicators',
+                <!-- <VBox id="indicators" items="{
+                    path: 'Indicators',
                     factory: '.factory',
                     templateShareable: false
                   }">
                   <dependents>
-                    <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" 
-                      type="XML"/>
-                    <core:Fragment fragmentName="ck.marketdata.fragment.MACD" 
-                      type="XML"/>
+                    <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" type="XML"/>
+                    <core:Fragment fragmentName="ck.marketdata.fragment.MACD" type="XML"/>
                   </dependents>
-                </VBox>
+                </VBox> -->
               </VBox>
             </l:SplitPane>
           </l:PaneContainer>
