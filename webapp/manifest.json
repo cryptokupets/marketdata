@@ -69,14 +69,19 @@
           "target": "main"
         },
         {
+          "pattern": "marketDataSet",
+          "name": "marketDataSet",
+          "target": "marketDataSet"
+        },
+        {
+          "pattern": "marketData/{id}",
+          "name": "marketData",
+          "target": "marketData"
+        },
+        {
           "pattern": "backtests",
           "name": "backtests",
           "target": "backtests"
-        },
-        {
-          "pattern": "candles",
-          "name": "candles",
-          "target": "candles"
         },
         {
           "pattern": "backtest/{id}",
@@ -89,9 +94,13 @@
           "viewName": "Main",
 					"viewLevel": 0
         },
-        "candles": {
-          "viewName": "Candles",
+        "marketDataSet": {
+          "viewName": "MarketDataSet",
 					"viewLevel": 1
+        },
+        "marketData": {
+          "viewName": "MarketData",
+					"viewLevel": 2
         },
         "backtests": {
           "viewName": "Backtests",

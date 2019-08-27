@@ -1,4 +1,4 @@
-<mvc:View controllerName="ck.marketdata.controller.Candles" 
+<mvc:View controllerName="ck.marketdata.controller.MarketData" 
   xmlns:mvc="sap.ui.core.mvc" 
   xmlns:core="sap.ui.core" 
   xmlns:l="sap.ui.layout" 
@@ -62,8 +62,7 @@
                       <form:FormElement label="Asset">
                         <ComboBox id="asset" 
                           selectedKey="{draft>/asset}" 
-                          items="{Assets}" 
-                          change="onAssetChange">
+                          items="{Assets}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
@@ -75,8 +74,7 @@
                       </form:FormElement>
                       <form:FormElement label="Timeframe">
                         <ComboBox selectedKey="{draft>/timeframe}" 
-                          items="{Timeframes}" 
-                          change="onTimeframeChange">
+                          items="{Timeframes}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
@@ -129,9 +127,9 @@
                 <items>
                   <ColumnListItem>
                     <cells>
-                      <ObjectIdentifier title="{draft>Series/0/type}" />
-                      <Text text="{draft>Series/0/indicatorName}" />
-                      <Text text="{draft>Series/0/indicatorOptions}" />
+                      <ObjectIdentifier title="{draft>type}" />
+                      <Text text="{draft>indicatorName}" />
+                      <Text text="{draft>indicatorOptions}" />
                     </cells>
                   </ColumnListItem>
                 </items>
@@ -144,27 +142,17 @@
                 <chart:Chart id="candlestick" 
                   height="300px" 
                   padding="5 20 25 60" 
-                  start="{buffer>/start}" 
-                  end="{buffer>/end}" 
-                  timeframe="60">
-                  <chart:CandlestickChart items="{charts>/candles}">
-                    <chart:Candle time="{charts>time}" 
-                      open="{charts>open}" 
-                      high="{charts>high}" 
-                      low="{charts>low}" 
-                      close="{charts>close}"/>
+                  start="{start}" 
+                  end="{end}" 
+                  timeframe="{timeframe}">
+                  <chart:CandlestickChart items="{Candles}">
+                    <chart:Candle time="{time}" 
+                      open="{open}" 
+                      high="{high}" 
+                      low="{low}" 
+                      close="{close}"/>
                   </chart:CandlestickChart>
                 </chart:Chart>
-                <!-- <chart:Chart id="indicator0" height="90px" padding="5 20 25 60" start="{buffer>/start}" end="{buffer>/end}" timeframe="60">
-                  <indicator:CCIOZ items="{charts>/indicators/0/output}" overboughtZone="100" oversoldZone="-100">
-                    <chart:LineChartItem time="{charts>time}" value="{charts>values/0}"/>
-                  </indicator:CCIOZ>
-                </chart:Chart> -->
-                <!-- <chart:Chart id="indicator1" height="90px" padding="5 20 25 60" start="{buffer>/start}" end="{buffer>/end}" timeframe="60">
-                  <indicator:MACD items="{charts>/indicators/1/output}">
-                    <indicator:MACDItem time="{charts>time}" macd="{charts>values/0}" trigger="{charts>values/1}" histogram="{charts>values/2}"/>
-                  </indicator:MACD>
-                </chart:Chart> -->
                 <!-- <VBox id="indicators" items="{
                     path: 'Indicators',
                     factory: '.factory',
@@ -174,7 +162,7 @@
                     <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" type="XML"/>
                     <core:Fragment fragmentName="ck.marketdata.fragment.MACD" type="XML"/>
                   </dependents>
-                </VBox> -->
+                </VBox> -->                
               </VBox>
             </l:SplitPane>
           </l:PaneContainer>

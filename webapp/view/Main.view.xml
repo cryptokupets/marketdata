@@ -9,8 +9,8 @@
 					<l:BlockLayoutRow>
 						<l:BlockLayoutCell titleAlignment="Center">
 							<l:titleLink>
-								<Link text="Candles" 
-									href="/#/candles"/>
+								<Link text="Market Data" 
+									href="/#/marketDataSet"/>
 							</l:titleLink>
 						</l:BlockLayoutCell>
 						<l:BlockLayoutCell titleAlignment="Center">
