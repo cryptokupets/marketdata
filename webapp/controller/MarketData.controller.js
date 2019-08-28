@@ -34,7 +34,7 @@ sap.ui.define(
         oView.bindElement({
           path: sPath,
           parameters: {
-            $expand: "Indicators,Exchange($expand=Currencies,Timeframes)"
+            $expand: "Indicators,Exchange($expand=Currencies,Timeframes),Candles"
           },
           events: {
             dataReceived: function() {
@@ -54,6 +54,7 @@ sap.ui.define(
                   }))
               });
               oController._bindAssets();
+              oController._draw();
             }
           }
         });
@@ -82,6 +83,10 @@ sap.ui.define(
 
       onCurrencyChange: function() {
         this._bindAssets();
+      },
+
+      _draw: function() {
+        this.byId("candlestick").refresh();
       },
 
       onRefreshPress: function() {
@@ -165,7 +170,7 @@ sap.ui.define(
       onBackPress: function() {
         this.getOwnerComponent()
           .getRouter()
-          .navTo("main");
+          .navTo("marketDataSet");
       }
     });
   }
