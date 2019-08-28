@@ -48,7 +48,7 @@
                       </form:FormElement>
                       <form:FormElement label="Currency">
                         <ComboBox selectedKey="{draft>/currency}" 
-                          items="{Currencies}" 
+                          items="{Exchange/Currencies}" 
                           change="onCurrencyChange">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
@@ -61,20 +61,15 @@
                       </form:FormElement>
                       <form:FormElement label="Asset">
                         <ComboBox id="asset" 
-                          selectedKey="{draft>/asset}" 
-                          items="{Assets}">
+                          selectedKey="{draft>/asset}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
-                          <items>
-                            <core:Item text="{key}" 
-                              key="{key}"/>
-                          </items>
                         </ComboBox>
                       </form:FormElement>
                       <form:FormElement label="Timeframe">
                         <ComboBox selectedKey="{draft>/timeframe}" 
-                          items="{Timeframes}">
+                          items="{Exchange/Timeframes}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
@@ -128,8 +123,8 @@
                   <ColumnListItem>
                     <cells>
                       <ObjectIdentifier title="{draft>type}" />
-                      <Text text="{draft>indicatorName}" />
-                      <Text text="{draft>indicatorOptions}" />
+                      <Text text="{draft>name}" />
+                      <Text text="{draft>options}" />
                     </cells>
                   </ColumnListItem>
                 </items>
@@ -162,7 +157,7 @@
                     <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" type="XML"/>
                     <core:Fragment fragmentName="ck.marketdata.fragment.MACD" type="XML"/>
                   </dependents>
-                </VBox> -->                
+                </VBox> -->
               </VBox>
             </l:SplitPane>
           </l:PaneContainer>

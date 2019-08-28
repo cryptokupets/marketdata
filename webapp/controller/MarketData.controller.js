@@ -5,9 +5,10 @@ sap.ui.define(
     "sap/ui/core/mvc/Controller",
     "sap/ui/core/UIComponent",
     "sap/ui/model/json/JSONModel",
+    "sap/ui/core/Item",
     "ck/marketdata/thirdparty/moment-with-locales"
   ],
-  function(Controller, UIComponent, JSONModel) {
+  function(Controller, UIComponent, JSONModel, Item) {
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.MarketData", {
@@ -15,25 +16,25 @@ sap.ui.define(
         UIComponent.getRouterFor(this)
           .getRoute("marketData")
           .attachMatched(this._onRouteMatched, this);
-
         var oView = this.getView();
         oView.addStyleClass(this.getOwnerComponent().getContentDensityClass());
-
         oView.setModel(new JSONModel(), "draft");
       },
 
       _onRouteMatched: function(oEvent) {
-        this._bind("/MarketData('"+ oEvent.getParameter("arguments").id  +"')");
+        this._bind(
+          "/MarketData('" + oEvent.getParameter("arguments").id + "')"
+        );
       },
 
       _bind: function(sPath) {
+        var oController = this;
         var oView = this.getView();
         var oDraftModel = oView.getModel("draft");
         oView.bindElement({
           path: sPath,
           parameters: {
-            $expand: "Indicators($expand=Series),Timeframes,Assets,Currencies,Candles"
-            // FIXME Timeframes,Assets,Currencies неправильно, т.к. они зависят от выбранного
+            $expand: "Indicators,Exchange($expand=Currencies,Timeframes)"
           },
           events: {
             dataReceived: function() {
@@ -48,18 +49,35 @@ sap.ui.define(
                   .getObject("Indicators")
                   .map(value => ({
                     type: value.type,
-                    indicatorName: value.indicatorName,
-                    indicatorOptions: value.indicatorOptions
+                    name: value.name,
+                    options: value.options
                   }))
               });
+              oController._bindAssets();
             }
           }
         });
       },
 
       _bindAssets: function() {
-        // получить конкретный binding, обновить
-        // вызывается из разных мест
+        var oView = this.getView();
+        var oBindingContext = oView.getBindingContext();
+        var sExchange = oBindingContext.getProperty("exchange");
+        var sCurrency = oView.getModel("draft").getProperty("/currency");
+        this.byId("asset").bindAggregation("items", {
+          path:
+            "/Currency(key='" +
+            sCurrency +
+            "',exchangeKey='" +
+            sExchange +
+            "')/Assets",
+          length: 1000,
+          template: new Item({
+            text: "{key}",
+            key: "{key}"
+          }),
+          templateShareable: false
+        });
       },
 
       onCurrencyChange: function() {
@@ -109,7 +127,9 @@ sap.ui.define(
 
       onApplyPress: function() {
         var oController = this;
-        var sPath = this.getView().getBindingContext().getPath();
+        var sPath = this.getView()
+          .getBindingContext()
+          .getPath();
         $.ajax({
           async: true,
           url: "/odata" + sPath,
@@ -118,10 +138,9 @@ sap.ui.define(
             "Content-Type": "application/json"
           },
           data: this._draftToJSON()
-        })
-          .then(function() {
-            oController._bind(sPath);
-          });
+        }).then(function() {
+          oController._bind(sPath);
+        });
       },
 
       // factory: function(sId, oContext) {
