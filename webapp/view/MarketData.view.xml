@@ -12,9 +12,12 @@
     navButtonPress="onBackPress" 
     showHeader="true">
     <headerContent>
-      <Button icon="sap-icon://refresh" 
-        text="Refresh" 
-        press="onRefreshPress"/>
+      <Button icon="sap-icon://add" 
+        text="Add Indicator" 
+        press="onAddIndicatorPress"/>
+      <Button icon="sap-icon://save" 
+        text="Save" 
+        press="onSavePress"/>
     </headerContent>
     <content>
       <l:ResponsiveSplitter>
@@ -67,9 +70,9 @@
                           </layoutData>
                         </ComboBox>
                       </form:FormElement>
-                      <form:FormElement label="Timeframe">
-                        <ComboBox selectedKey="{draft>/timeframe}" 
-                          items="{Exchange/Timeframes}">
+                      <form:FormElement label="Period">
+                        <ComboBox selectedKey="{draft>/period}" 
+                          items="{Exchange/Periods}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>

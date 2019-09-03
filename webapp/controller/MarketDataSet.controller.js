@@ -27,12 +27,14 @@ sap.ui.define(
           headers: {
             "Content-Type": "application/json"
           },
-          data: {
+          data: JSON.stringify({
             exchange: "hitbtc",
             currency: "USD",
             asset: "BTC",
-            timefarme: "M1"
-          }
+            period: 60,
+            start: "2019-09-01T00:00:00.000Z",
+            end: "2019-09-01T23:59:00.000Z"
+          })
         })
           .then(function(oData) {
             // oModel.refresh();

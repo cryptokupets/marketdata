@@ -34,7 +34,8 @@ sap.ui.define(
         oView.bindElement({
           path: sPath,
           parameters: {
-            $expand: "Indicators,Exchange($expand=Currencies,Timeframes),Candles"
+            $expand:
+              "Indicators,Exchange($expand=Currencies,Periods),Candles"
           },
           events: {
             dataReceived: function() {
@@ -42,7 +43,7 @@ sap.ui.define(
               oDraftModel.setData({
                 currency: oBindingContext.getProperty("currency"),
                 asset: oBindingContext.getProperty("asset"),
-                timeframe: oBindingContext.getProperty("timeframe"),
+                period: oBindingContext.getProperty("period"),
                 start: oBindingContext.getProperty("start").slice(0, 10),
                 end: oBindingContext.getProperty("end").slice(0, 10),
                 Indicators: oBindingContext
@@ -86,7 +87,9 @@ sap.ui.define(
       },
 
       _draw: function() {
-        this.byId("candlestick").refresh();
+        setTimeout(() => {
+          this.byId("candlestick").refresh();
+        });
       },
 
       onRefreshPress: function() {
@@ -119,18 +122,17 @@ sap.ui.define(
         return JSON.stringify({
           asset: oDraftModel.getProperty("/asset"),
           currency: oDraftModel.getProperty("/currency"),
-          timeframe: oDraftModel.getProperty("/timeframe"),
+          period: oDraftModel.getProperty("/period"),
           end: moment
             .utc(oDraftModel.getProperty("/end"))
             .add(1, "d")
             .add(-1, "s")
             .toISOString(),
-          start: moment.utc(oDraftModel.getProperty("/start")).toISOString(),
-          Indicators: oDraftModel.getObject("/Indicators")
+          start: moment.utc(oDraftModel.getProperty("/start")).toISOString()
         });
       },
 
-      onApplyPress: function() {
+      onSavePress: function() {
         var oController = this;
         var sPath = this.getView()
           .getBindingContext()
@@ -143,6 +145,29 @@ sap.ui.define(
             "Content-Type": "application/json"
           },
           data: this._draftToJSON()
+        }).then(function() {
+          oController._bind(sPath);
+        });
+      },
+
+      onAddIndicatorPress: function() {
+        var oController = this;
+        var oBindingContext = this.getView().getBindingContext();
+        var sId = oBindingContext.getProperty("_id");
+        var sPath = oBindingContext.getPath();
+
+        $.post({
+          async: true,
+          url: "/odata/IndicatorView",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          data: JSON.stringify({
+            name: "cci",
+            options: "[14]",
+            parentId: sId,
+            type: "CCI"
+          })
         }).then(function() {
           oController._bind(sPath);
         });
