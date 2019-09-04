@@ -35,7 +35,7 @@ sap.ui.define(
           path: sPath,
           parameters: {
             $expand:
-              "Indicators,Exchange($expand=Currencies,Periods),Candles"
+              "Indicators($expand=Output($expand=values),Parent),Exchange($expand=Currencies,Periods),Candles"
           },
           events: {
             dataReceived: function() {
@@ -87,33 +87,16 @@ sap.ui.define(
       },
 
       _draw: function() {
+        var that = this;
         setTimeout(() => {
-          this.byId("candlestick").refresh();
-        });
-      },
-
-      onRefreshPress: function() {
-        var oBindingContext = this.getView().getBindingContext();
-        var oCandlestick = this.byId("candlestick");
-        // var oIndicator0 = this.byId("indicator0");
-        var oIndicators = this.byId("indicators");
-        // var oChartsModel = this.getView().getModel("charts");
-        // var oChartsModel1 = this.getView().getModel("charts1");
-        $.get({
-          async: true,
-          url: "/odata/" + oBindingContext.getPath() + "/odata.getOutput()"
-        }).then(function(oData) {
-          // перерисовать диаграммы
-          oChartsModel.setData(oData);
-          oCandlestick.refresh();
-          // oIndicator0.refresh();
-          // oIndicator1.refresh();
-          var iNext = oChartsModel1.getProperty("/indicators").length;
-          // console.log(iNext);
-          // console.log(oIndicators);
-          for (let i = 0; i < iNext; i++) {
-            oIndicators.getItems()[i].refresh();
-          }
+          that.byId("candlestick").refresh();
+          that
+            .byId("indicators")
+            .getItems()
+            .forEach(e => {
+              console.log(e);
+              e.refresh();
+            });
         });
       },
 
@@ -173,24 +156,12 @@ sap.ui.define(
         });
       },
 
-      // factory: function(sId, oContext) {
-      //   var sName = oContext.getProperty("name");
-      //   return !!sName
-      //     ? this.byId(oContext.getProperty("name").toLowerCase()).clone(sId)
-      //     : null;
-      // },
-
-      // _addIndicator: function(sName) {
-      //   var oChartsModel = this.getView().getModel("charts");
-      //   var iNext = oChartsModel.getProperty("/indicators").length;
-      //   oChartsModel.setProperty("/indicators/" + iNext, {
-      //     name: sName
-      //   });
-      //   var oIndicators = this.byId("indicators");
-      //   for (let i = 0; i <= iNext; i++) {
-      //     oIndicators.getItems()[i].refresh();
-      //   }
-      // },
+      factory: function(sId, oContext) {
+        var o = this.byId(oContext.getProperty("name").toLowerCase());
+        var o1 = o.clone(sId);
+        console.log(o1);
+        return o;
+      },
 
       onBackPress: function() {
         this.getOwnerComponent()

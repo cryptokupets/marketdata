@@ -2,17 +2,17 @@
   xmlns:chart="openui5.financial.chart" 
   xmlns:indicator="openui5.financial.chart.indicator" 
   xmlns="sap.m">
-  <chart:Chart  id="macd"
+  <chart:Chart id="macd" 
     height="90px" 
     padding="5 20 25 60" 
-    start="{buffer>/start}" 
-    end="{buffer>/end}" 
-    timeframe="60">
-    <indicator:MACD items="{charts>/indicators/1/output}">
-      <indicator:MACDItem time="{charts>time}" 
-        macd="{charts>values/0}" 
-        trigger="{charts>values/1}" 
-        histogram="{charts>values/2}"/>
+    start="{Parent/start}" 
+    end="{Parent/end}" 
+    period="{Parent/period}">
+    <indicator:MACD items="{Output}">
+      <indicator:MACDItem time="{time}" 
+        macd="{values/0}" 
+        trigger="{values/1}" 
+        histogram="{values/2}"/>
     </indicator:MACD>
   </chart:Chart>
 </core:FragmentDefinition>

@@ -2,17 +2,18 @@
   xmlns:chart="openui5.financial.chart" 
   xmlns:indicator="openui5.financial.chart.indicator" 
   xmlns="sap.m">
-  <chart:Chart id="ccioz" 
+  <chart:Chart id="cci" 
     height="90px" 
     padding="5 20 25 60" 
     start="{Parent/start}" 
     end="{Parent/end}" 
     period="{Parent/period}">
-    <indicator:CCIOZ items="{Output}" 
-      overboughtZone="100" 
-      oversoldZone="-100">
+    <indicator:CCI items="{
+        path: 'Output',
+        templateShareable: false
+      }">
       <chart:LineChartItem time="{time}" 
         value="{values/0}"/>
-    </indicator:CCIOZ>
+    </indicator:CCI>
   </chart:Chart>
 </core:FragmentDefinition>

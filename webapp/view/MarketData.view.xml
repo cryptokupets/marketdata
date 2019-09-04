@@ -151,13 +151,15 @@
                       close="{close}"/>
                   </chart:CandlestickChart>
                 </chart:Chart>
-                <!-- <VBox id="indicators" 
+                <VBox id="indicators" 
                   items="{
                     path: 'Indicators',
                     factory: '.factory',
                     templateShareable: false
                   }">
                   <dependents>
+                    <core:Fragment fragmentName="ck.marketdata.fragment.Empty" 
+                      type="XML"/>
                     <core:Fragment fragmentName="ck.marketdata.fragment.CCI" 
                       type="XML"/>
                     <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" 
@@ -165,7 +167,7 @@
                     <core:Fragment fragmentName="ck.marketdata.fragment.MACD" 
                       type="XML"/>
                   </dependents>
-                </VBox> -->
+                </VBox>
               </VBox>
             </l:SplitPane>
           </l:PaneContainer>
