@@ -35,9 +35,9 @@
 						</template>
 					</Column>
 					<Column>
-						<m:Label text="Timeframe" />
+						<m:Label text="Period" />
 						<template>
-							<m:Text text="{timeframe}" 
+							<m:Text text="{period}" 
 								wrapping="false"/>
 						</template>
 					</Column>

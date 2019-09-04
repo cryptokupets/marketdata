@@ -122,7 +122,7 @@ sap.ui.define(
         return JSON.stringify({
           asset: oDraftModel.getProperty("/asset"),
           currency: oDraftModel.getProperty("/currency"),
-          period: oDraftModel.getProperty("/period"),
+          period: +oDraftModel.getProperty("/period"),
           end: moment
             .utc(oDraftModel.getProperty("/end"))
             .add(1, "d")
