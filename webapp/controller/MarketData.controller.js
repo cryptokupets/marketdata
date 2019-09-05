@@ -19,6 +19,7 @@ sap.ui.define(
         var oView = this.getView();
         oView.addStyleClass(this.getOwnerComponent().getContentDensityClass());
         oView.setModel(new JSONModel(), "draft");
+        oView.setModel(new JSONModel(), "chart");
       },
 
       _onRouteMatched: function(oEvent) {
@@ -31,6 +32,7 @@ sap.ui.define(
         var oController = this;
         var oView = this.getView();
         var oDraftModel = oView.getModel("draft");
+        var oChartModel = oView.getModel("chart");
         oView.bindElement({
           path: sPath,
           parameters: {
@@ -46,20 +48,31 @@ sap.ui.define(
                 period: oBindingContext.getProperty("period"),
                 start: oBindingContext.getProperty("start"),
                 end: oBindingContext.getProperty("end"),
-                Candles: oBindingContext.getObject("Candles"),
                 Indicators: oBindingContext
                   .getObject("Indicators")
                   .map(value => ({
                     type: value.type,
                     name: value.name,
-                    options: value.options,
-                    period: oBindingContext.getProperty("period"),
+                    options: value.options
+                  }))
+              });
+              oChartModel.setData({
+                currency: oBindingContext.getProperty("currency"),
+                asset: oBindingContext.getProperty("asset"),
+                period: +oBindingContext.getProperty("period"),
+                start: oBindingContext.getProperty("start"),
+                end: oBindingContext.getProperty("end"),
+                Candles: oBindingContext.getObject("Candles"),
+                Indicators: oBindingContext
+                  .getObject("Indicators")
+                  .map(value => ({
+                    type: value.type,
+                    period: +oBindingContext.getProperty("period"),
                     start: oBindingContext.getProperty("start"),
                     end: oBindingContext.getProperty("end"),
                     Output: value.Output
                   }))
               });
-              console.log(oDraftModel);
               oController._bindAssets();
               oController._draw();
             }
@@ -100,7 +113,6 @@ sap.ui.define(
             .byId("indicators")
             .getItems()
             .forEach(e => {
-              console.log(e);
               e.refresh();
             });
         });
@@ -163,10 +175,7 @@ sap.ui.define(
       },
 
       factory: function(sId, oContext) {
-        var o = this.byId(oContext.getProperty("name").toLowerCase());
-        var o1 = o.clone(sId);
-        console.log(o1);
-        return o;
+        return this.byId(oContext.getProperty("type").toLowerCase()).clone(sId);
       },
 
       onBackPress: function() {

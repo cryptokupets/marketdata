@@ -5,16 +5,16 @@
   <chart:Chart id="cci" 
     height="90px" 
     padding="5 20 25 60" 
-    start="{draft>start}" 
-    end="{draft>end}" 
-    period="{draft>period}">
+    start="{chart>/start}" 
+    end="{chart>/end}" 
+    period="{chart>/period}">
     <indicator:CCI items="{
-        model: 'draft',
+        model: 'chart',
         path: 'Output',
         templateShareable: false
       }">
-      <chart:LineChartItem time="{draft>time}" 
-        value="{draft>values/0}"/>
+      <chart:LineChartItem time="{chart>time}" 
+        value="{chart>values/0}"/>
     </indicator:CCI>
   </chart:Chart>
 </core:FragmentDefinition>

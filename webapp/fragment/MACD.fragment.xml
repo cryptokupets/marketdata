@@ -5,14 +5,18 @@
   <chart:Chart id="macd" 
     height="90px" 
     padding="5 20 25 60" 
-    start="{Parent/start}" 
-    end="{Parent/end}" 
-    period="{Parent/period}">
-    <indicator:MACD items="{Output}">
-      <indicator:MACDItem time="{time}" 
-        macd="{values/0}" 
-        trigger="{values/1}" 
-        histogram="{values/2}"/>
+    start="{chart>/start}" 
+    end="{chart>/end}" 
+    period="{chart>/period}">
+    <indicator:MACD items="{
+        model: 'chart',
+        path: 'Output',
+        templateShareable: false
+      }">
+      <indicator:MACDItem time="{chart>time}" 
+        macd="{chart>values/0}" 
+        trigger="{chart>values/1}" 
+        histogram="{chart>values/2}"/>
     </indicator:MACD>
   </chart:Chart>
 </core:FragmentDefinition>

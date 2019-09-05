@@ -140,28 +140,26 @@
                 <chart:Chart id="candlestick" 
                   height="300px" 
                   padding="5 20 25 60" 
-                  start="{draft>/start}" 
-                  end="{draft>/end}" 
-                  period="{draft>/period}">
-                  <chart:CandlestickChart items="{draft>/Candles}">
-                    <chart:Candle time="{draft>time}" 
-                      open="{draft>open}" 
-                      high="{draft>high}" 
-                      low="{draft>low}" 
-                      close="{draft>close}"/>
+                  start="{chart>/start}" 
+                  end="{chart>/end}" 
+                  period="{chart>/period}">
+                  <chart:CandlestickChart items="{chart>/Candles}">
+                    <chart:Candle time="{chart>time}" 
+                      open="{chart>open}" 
+                      high="{chart>high}" 
+                      low="{chart>low}" 
+                      close="{chart>close}"/>
                   </chart:CandlestickChart>
                 </chart:Chart>
                 <VBox id="indicators" 
                   items="{
-                    model: 'draft',
+                    model: 'chart',
                     path: '/Indicators',
                     factory: '.factory',
                     templateShareable: false
                   }">
                   <dependents>
                     <core:Fragment fragmentName="ck.marketdata.fragment.CCI" 
-                      type="XML"/>
-                    <core:Fragment fragmentName="ck.marketdata.fragment.CCIOZ" 
                       type="XML"/>
                     <core:Fragment fragmentName="ck.marketdata.fragment.MACD" 
                       type="XML"/>
