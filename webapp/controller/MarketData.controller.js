@@ -44,16 +44,22 @@ sap.ui.define(
                 currency: oBindingContext.getProperty("currency"),
                 asset: oBindingContext.getProperty("asset"),
                 period: oBindingContext.getProperty("period"),
-                start: oBindingContext.getProperty("start").slice(0, 10),
-                end: oBindingContext.getProperty("end").slice(0, 10),
+                start: oBindingContext.getProperty("start"),
+                end: oBindingContext.getProperty("end"),
+                Candles: oBindingContext.getObject("Candles"),
                 Indicators: oBindingContext
                   .getObject("Indicators")
                   .map(value => ({
                     type: value.type,
                     name: value.name,
-                    options: value.options
+                    options: value.options,
+                    period: oBindingContext.getProperty("period"),
+                    start: oBindingContext.getProperty("start"),
+                    end: oBindingContext.getProperty("end"),
+                    Output: value.Output
                   }))
               });
+              console.log(oDraftModel);
               oController._bindAssets();
               oController._draw();
             }
