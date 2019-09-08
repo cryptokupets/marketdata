@@ -46,8 +46,8 @@ sap.ui.define(
                 currency: oBindingContext.getProperty("currency"),
                 asset: oBindingContext.getProperty("asset"),
                 period: oBindingContext.getProperty("period"),
-                start: oBindingContext.getProperty("start"),
-                end: oBindingContext.getProperty("end"),
+                start: oBindingContext.getProperty("start").slice(0, 10),
+                end: oBindingContext.getProperty("end").slice(0, 10),
                 Indicators: oBindingContext
                   .getObject("Indicators")
                   .map(value => ({
