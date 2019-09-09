@@ -6,9 +6,10 @@ sap.ui.define(
     "sap/ui/core/UIComponent",
     "sap/ui/model/json/JSONModel",
     "sap/ui/core/Item",
+    "sap/m/MessageBox",
     "ck/marketdata/thirdparty/moment-with-locales"
   ],
-  function(Controller, UIComponent, JSONModel, Item) {
+  function(Controller, UIComponent, JSONModel, Item, MessageBox) {
     "use strict";
 
     return Controller.extend("ck.marketdata.controller.MarketData", {
@@ -51,6 +52,7 @@ sap.ui.define(
                 Indicators: oBindingContext
                   .getObject("Indicators")
                   .map(value => ({
+                    _id: value._id,
                     type: value.type,
                     name: value.name,
                     options: value.options
@@ -67,6 +69,7 @@ sap.ui.define(
                   .getObject("Indicators")
                   .map(value => ({
                     type: value.type,
+                    // _id: oBindingContext.getProperty("_id"),
                     period: +oBindingContext.getProperty("period"),
                     start: oBindingContext.getProperty("start"),
                     end: oBindingContext.getProperty("end"),
@@ -135,18 +138,41 @@ sap.ui.define(
 
       onSavePress: function() {
         var oController = this;
-        var sPath = this.getView()
-          .getBindingContext()
-          .getPath();
-        $.ajax({
-          async: true,
-          url: "/odata" + sPath,
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          data: this._draftToJSON()
-        }).then(function() {
+        var oView = this.getView();
+        var sPath = oView.getBindingContext().getPath();
+
+        Promise.all(
+          [
+            $.ajax({
+              async: true,
+              url: "/odata" + sPath,
+              method: "PATCH",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              data: this._draftToJSON()
+            })
+          ].concat(
+            oView
+              .getModel("draft")
+              .getObject("/Indicators")
+              .map(function(e) {
+                return $.ajax({
+                  async: true,
+                  url: "/odata/IndicatorView('" + e._id + "')",
+                  method: "PATCH",
+                  headers: {
+                    "Content-Type": "application/json"
+                  },
+                  data: JSON.stringify({
+                    type: e.type,
+                    name: e.name,
+                    options: e.options
+                  })
+                });
+              })
+          )
+        ).then(function() {
           oController._bind(sPath);
         });
       },
@@ -171,6 +197,35 @@ sap.ui.define(
           })
         }).then(function() {
           oController._bind(sPath);
+        });
+      },
+
+      onDeleteIndicatorPress: function(oEvent) {
+        var oController = this;
+        var oBindingContext = oEvent.getSource().getBindingContext("draft");
+        var sId = oBindingContext.getProperty("_id"); // UNDONE
+        var oView = this.getView();
+        var sPath = oView.getBindingContext().getPath();
+
+        var bCompact = !!this.getView()
+          .$()
+          .closest(".sapUiSizeCompact").length;
+        MessageBox.confirm("Are you sure?", {
+          styleClass: bCompact ? "sapUiSizeCompact" : "",
+          // UNDONE заменить на styleClass: this.getOwnerComponent().getContentDensityClass(),
+          title: "Delete Indicator",
+          icon: "NONE",
+          onClose: function(oAction) {
+            if (oAction === "OK") {
+              $.ajax({
+                async: true,
+                url: "/odata/IndicatorView('" + sId + "')",
+                method: "DELETE"
+              }).then(function() {
+                oController._bind(sPath);
+              });
+            }
+          }
         });
       },
 
