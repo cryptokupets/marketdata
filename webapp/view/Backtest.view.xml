@@ -14,7 +14,7 @@
     showHeader="true">
     <headerContent>
       <Button icon="sap-icon://media-play" 
-        text="Run"
+        text="Run" 
         press="onRunPress"/>
     </headerContent>
     <content>
@@ -69,10 +69,9 @@
                           </layoutData>
                         </ComboBox>
                       </form:FormElement>
-                      <form:FormElement label="Timeframe">
-                        <ComboBox selectedKey="{draft>/timeframe}" 
-                          items="{Exchange/Timeframes}" 
-                          change="onTimeframeChange">
+                      <form:FormElement label="Period">
+                        <ComboBox selectedKey="{draft>/period}" 
+                          items="{Exchange/Periods}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>
                           </layoutData>
@@ -119,7 +118,8 @@
                       <form:FormElement label="Stop loss enabled">
                         <CheckBox selected="{draft>/stoplossEnabled}"/>
                       </form:FormElement>
-                      <form:FormElement label="Stop loss level" visible="{draft>/stoplossEnabled}">
+                      <form:FormElement label="Stop loss level" 
+                        visible="{draft>/stoplossEnabled}">
                         <Input value="{draft>/stopLossLevel}">
                           <layoutData>
                             <l:GridData span="XL2 L2 M3 S6"/>

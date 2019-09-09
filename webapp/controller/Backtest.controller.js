@@ -29,7 +29,7 @@ sap.ui.define(
         oView.bindElement({
           path: "/Backtest('" + sBacktestId + "')",
           parameters: {
-            $expand: "Exchange($expand=Currencies,Timeframes)"
+            $expand: "Exchange($expand=Currencies,Periods)"
           },
           events: {
             dataReceived: function() {
@@ -44,8 +44,8 @@ sap.ui.define(
                 oBindingContext.getProperty("assetKey")
               );
               oDraftModel.setProperty(
-                "/timeframe",
-                oBindingContext.getProperty("timeframe")
+                "/period",
+                oBindingContext.getProperty("period")
               );
               oDraftModel.setProperty(
                 "/strategyIndicators",
@@ -76,18 +76,6 @@ sap.ui.define(
               oDraftModel.setProperty("/start", sStart);
               var sEnd = oBindingContext.getProperty("end").slice(0, 10);
               oDraftModel.setProperty("/end", sEnd);
-              var sTimeframe = oBindingContext.getProperty("timeframe");
-              oView
-                .getModel("view")
-                .setProperty(
-                  "/timeframe",
-                  moment
-                    .duration(
-                      +sTimeframe.slice(1),
-                      sTimeframe.slice(0, 1).toLowerCase()
-                    )
-                    .asMinutes()
-                );
             }
           }
         });
@@ -144,7 +132,7 @@ sap.ui.define(
           strategyCode: oDraftModel.getProperty("/strategyCode"),
           strategyIndicators: oDraftModel.getProperty("/strategyIndicators"),
           strategyParameters: oDraftModel.getProperty("/strategyParameters"),
-          timeframe: oDraftModel.getProperty("/timeframe")
+          period: +oDraftModel.getProperty("/period")
         });
       },
 
